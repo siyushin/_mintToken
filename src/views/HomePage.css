@@ -1,0 +1,13 @@
+.button {
+	padding  : 1rem;
+	font-size: xx-large;
+	margin   : 1rem;
+}
+
+.block {
+	margin-top     : 5rem;
+	display        : flex;
+	flex-direction : row;
+	justify-content: center;
+	align-items    : center;
+}

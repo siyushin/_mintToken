@@ -2,35 +2,33 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { ThemeProvider, createTheme } from 'arwes';
 import Arwes from 'arwes/lib/Arwes';
-import Button from 'arwes/lib/Button';
 import Loading from 'arwes/lib/Loading'
 import AntennaManager from './AntennaManager'
 import ContractPanel from './views/ContractPanel';
 import Done from './views/Done';
+import HomePage from './views/HomePage';
+import ERC721Panel from './views/ERC721Panel';
 
 function App() {
   const [status, setStatus] = useState('initializing...')
   const [view, setView] = useState(null)
 
-  useEffect(() => {
-    setStatus('Connecting wallet...')
-    AntennaManager.init()
+  const onClickERC20 = () => {
+    setView(<ContractPanel onCancel={onCancel} onSubmit={onSubmit} />)
+  }
 
-    setTimeout(() => {
-      setStatus('ioPay connected.')
-      setView(<ContractPanel onSubmit={onSubmit} />)
-      setTimeout(() => {
-        setStatus('')
-      }, 3000);
-    }, 3000);
-  }, [])
+  const onClickERC721 = () => {
+    setView(<ERC721Panel onCancel={onCancel} onSubmit={onSubmitERC721} />)
+  }
+
+  const generateHomePage = () => {
+    return (<HomePage
+      onClickERC20={onClickERC20}
+      onClickERC721={onClickERC721} />)
+  }
 
   const generateLoading = () => {
     return (<Loading animate full />)
-  }
-
-  const onClickConnectWallet = () => {
-    AntennaManager.getAccounts()
   }
 
   const onSubmit = (name, symbol, decimals, supply) => {
@@ -42,6 +40,34 @@ function App() {
       }
     })
   }
+
+  const onSubmitERC721 = (name, supply) => {
+    setView(generateLoading)
+
+    AntennaManager.deployERC721Contract(name, supply, contractAddress => {
+      if (contractAddress) {
+        setView(<Done address={contractAddress} />)
+      }
+    })
+  }
+
+  const onCancel = () => {
+    setView(generateHomePage)
+  }
+
+  useEffect(() => {
+    setStatus('Connecting wallet...')
+    AntennaManager.init()
+
+    setTimeout(() => {
+      setStatus('ioPay connected.')
+      setView(generateHomePage)
+
+      setTimeout(() => {
+        setStatus('　')
+      }, 3000);
+    }, 3000);
+  }, [])
 
   return (
     <ThemeProvider theme={createTheme()}>

@@ -4,14 +4,12 @@ import Words from 'arwes/lib/Words'
 import Frame from 'arwes/lib/Frame'
 import './ContractPanel.css'
 
-class ContractPanel extends React.Component {
+class ERC721Panel extends React.Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
 			name: '',
-			symbol: '',
-			decimals: '18',
 			supply: ''
 		}
 
@@ -20,7 +18,7 @@ class ContractPanel extends React.Component {
 	}
 
 	checkInput() {
-		return this.state.name != '' && this.state.symbol != '' && this.state.decimals != '' && this.state.supply != ''
+		return this.state.name !== '' && this.state.supply !== ''
 	}
 
 	onChangeInput(event) {
@@ -28,18 +26,6 @@ class ContractPanel extends React.Component {
 			case 'name':
 				this.setState({
 					name: event.target.value
-				})
-				break
-
-			case 'symbol':
-				this.setState({
-					symbol: event.target.value
-				})
-				break
-
-			case 'decimals':
-				this.setState({
-					decimals: event.target.value
 				})
 				break
 
@@ -55,7 +41,7 @@ class ContractPanel extends React.Component {
 	}
 
 	onSubmit() {
-		this.props.onSubmit(this.state.name, this.state.symbol, this.state.decimals, this.state.supply)
+		this.props.onSubmit(this.state.name, this.state.supply)
 	}
 
 	render() {
@@ -71,26 +57,6 @@ class ContractPanel extends React.Component {
 						</td>
 						<td className="tr">
 							<Words animate className="description">The name of the token. 3-25 symbols. Alphanumerical characters, space, and hyphen are accepted.</Words>
-						</td>
-					</tr>
-					<tr>
-						<td width="40%" className="tr">
-							<Frame animate={true} level={3} corners={4} layer='primary'>
-								<input id="symbol" className="input" type="text" placeholder="Token Symbol" onChange={this.onChangeInput} />
-							</Frame>
-						</td>
-						<td className="tr">
-							<Words animate className="description">This token symbol is already in use. We advise using another symbol.</Words>
-						</td>
-					</tr>
-					<tr>
-						<td width="40%" className="tr">
-							<Frame animate={true} level={3} corners={4} layer='primary'>
-								<input id="decimals" className="input" type="number" placeholder="Decimals" onChange={this.onChangeInput} />
-							</Frame>
-						</td>
-						<td className="tr">
-							<Words animate className="description">Defines the number of decimals for the token. 0-18 numerals are accepted. 18 is common practice.</Words>
 						</td>
 					</tr>
 					<tr>
@@ -118,4 +84,4 @@ class ContractPanel extends React.Component {
 	}
 }
 
-export default ContractPanel
+export default ERC721Panel

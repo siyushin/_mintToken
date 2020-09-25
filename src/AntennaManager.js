@@ -14,7 +14,7 @@ const AntennaManager = {
 
 	getAccounts: async function () {
 		const accounts = await this.antenna.iotx.accounts;
-		if (accounts?.length == 0) {
+		if (accounts?.length === 0) {
 			setTimeout(() => {
 				this.getAccounts()
 			}, 10000);
@@ -32,6 +32,21 @@ const AntennaManager = {
 			gasLimit: "1000000",
 			gasPrice: "1000000000000",
 		}, supply, name, symbol, decimals).then(contractAddress => {
+			this.getReceipt(contractAddress, callback)
+		}).catch(err => {
+			console.error('部署失败：', err)
+		})
+	},
+
+	deployERC721Contract: function (name, supply, callback) {
+		this.antenna.iotx.deployContract({
+			from: this.getAccounts().address,
+			amount: "0",
+			abi: Config.abi721,
+			data: null,
+			gasLimit: "1000000",
+			gasPrice: "1000000000000",
+		}, supply, name).then(contractAddress => {
 			this.getReceipt(contractAddress, callback)
 		}).catch(err => {
 			console.error('部署失败：', err)

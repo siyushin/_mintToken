@@ -1,15 +1,10 @@
 import React from 'react';
-import Button from 'arwes/lib/Button';
 import Words from 'arwes/lib/Words'
 import Frame from 'arwes/lib/Frame'
 import Line from 'arwes/lib/Line'
 import './Done.css'
 
 class Done extends React.Component {
-	constructor(props) {
-		super(props)
-	}
-
 	render() {
 		return (<div>
 			<Line animate layer='success' />
