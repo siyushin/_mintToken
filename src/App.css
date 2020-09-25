@@ -1,10 +1,35 @@
+@font-face {
+  font-family: "body";
+  src        : url("/conthrax-sb.ttf");
+}
+
 .App {
   text-align: center;
+  flex-grow : 1;
+}
+
+.title {
+  flex-grow  : 0;
+  font-family: 'body';
+}
+
+.mainView {
+  flex-grow      : 1;
+  align-items    : center;
+  justify-content: center;
+  padding-top    : 3rem;
+  font-family    : 'body';
 }
 
 .App-logo {
-  height: 40vmin;
+  height        : 40vmin;
   pointer-events: none;
+}
+
+.status {
+  font-size  : x-small;
+  margin     : 1rem;
+  font-family: 'body';
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -15,13 +40,13 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  min-height      : 100vh;
+  display         : flex;
+  flex-direction  : column;
+  align-items     : center;
+  justify-content : center;
+  font-size       : calc(10px + 2vmin);
+  color           : white;
 }
 
 .App-link {
@@ -32,6 +57,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

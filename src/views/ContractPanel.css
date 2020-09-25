@@ -1,0 +1,41 @@
+.h2 {
+	font-size    : 1rem;
+	margin-bottom: 2rem;
+}
+
+.tableContainer {
+	width          : 100%;
+	display        : flex;
+	justify-content: center;
+	align-items    : center;
+}
+
+.table {
+	max-width: 80%;
+}
+
+.tr {
+	padding-bottom: 1rem;
+}
+
+.input {
+	font-size       : 1rem;
+	padding         : 0.5rem;
+	background-color: transparent;
+	border          : none;
+	color           : #efefef;
+	width           : 100%;
+}
+
+.description {
+	font-size  : 0.8rem;
+	text-align : left;
+	margin-left: 1rem;
+}
+
+.buttonPanel {
+	margin-top     : 2rem;
+	display: flex;
+	justify-content: flex-end;
+	padding-right: 10%;
+}
