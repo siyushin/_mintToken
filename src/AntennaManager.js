@@ -20,6 +20,8 @@ const AntennaManager = {
 			}, 10000);
 			return;
 		}
+
+		console.log(accounts[0].address)
 		return accounts[0]
 	},
 

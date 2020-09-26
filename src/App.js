@@ -61,11 +61,8 @@ function App() {
 
     setTimeout(() => {
       setStatus('ioPay connected.')
+      // AntennaManager.getAccounts()
       setView(generateHomePage)
-
-      setTimeout(() => {
-        setStatus('　')
-      }, 3000);
     }, 3000);
   }, [])
 

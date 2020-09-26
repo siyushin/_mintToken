@@ -10,7 +10,7 @@ class ERC721Panel extends React.Component {
 
 		this.state = {
 			name: '',
-			supply: ''
+			symbol: ''
 		}
 
 		this.onChangeInput = this.onChangeInput.bind(this)
@@ -18,7 +18,7 @@ class ERC721Panel extends React.Component {
 	}
 
 	checkInput() {
-		return this.state.name !== '' && this.state.supply !== ''
+		return this.state.name !== '' && this.state.symbol !== ''
 	}
 
 	onChangeInput(event) {
@@ -29,11 +29,12 @@ class ERC721Panel extends React.Component {
 				})
 				break
 
-			case 'supply':
+			case 'symbol':
 				this.setState({
-					supply: event.target.value
+					symbol: event.target.value
 				})
 				break
+
 
 			default:
 				break
@@ -41,7 +42,7 @@ class ERC721Panel extends React.Component {
 	}
 
 	onSubmit() {
-		this.props.onSubmit(this.state.name, this.state.supply)
+		this.props.onSubmit(this.state.name, this.state.symbol)
 	}
 
 	render() {
@@ -62,11 +63,11 @@ class ERC721Panel extends React.Component {
 					<tr>
 						<td width="40%" className="tr">
 							<Frame animate={true} level={3} corners={4} layer='primary'>
-								<input id="supply" className="input" type="number" placeholder="Total Supply" onChange={this.onChangeInput} />
+								<input id="symbol" className="input" type="text" placeholder="Token Symbol" onChange={this.onChangeInput} />
 							</Frame>
 						</td>
 						<td className="tr">
-							<Words animate className="description">Total amount of tokens to be generated. Minimum value is 1, and maximum 1000000000000000.</Words>
+							<Words animate className="description">This token symbol is already in use. We advise using another symbol.</Words>
 						</td>
 					</tr>
 				</table>
