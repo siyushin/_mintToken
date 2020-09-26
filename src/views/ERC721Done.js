@@ -7,6 +7,7 @@ import './ERC721Done.css'
 import Dropzone from 'react-dropzone';
 import ipfs from 'ipfs-http-client'
 import AntennaManager from '../AntennaManager';
+import Config from '../Config';
 
 class ERC721Done extends React.Component {
 	constructor(props) {
@@ -14,7 +15,7 @@ class ERC721Done extends React.Component {
 
 		this.state = {
 			ipfsPath: '',
-			ntfs: []
+			nfts: []
 		}
 
 		this.onSubmit = this.onSubmit.bind(this)
@@ -26,7 +27,7 @@ class ERC721Done extends React.Component {
 		reader.onerror = () => console.log('file reading has failed')
 		reader.onload = () => {
 			const binaryStr = reader.result
-			let theIPFS = ipfs({ host: 'localhost', port: '5001', protocol: 'http' });
+			let theIPFS = ipfs({ host: Config.ipfsURL, port: Config.ipfsPort, protocol: Config.ipfsScheme });
 			theIPFS.add(binaryStr).then(file => {
 				this.setState({
 					ipfsPath: file.path
@@ -38,9 +39,9 @@ class ERC721Done extends React.Component {
 
 	onSubmit() {
 		AntennaManager.mint721(this.props.address, this.state.ipfsPath, txid => {
-			this.state.ntfs.push(txid)
+			this.state.nfts.push(txid)
 			this.setState({
-				ntfs: [...this.state.ntfs]
+				nfts: [...this.state.nfts]
 			})
 		})
 	}
@@ -87,10 +88,10 @@ class ERC721Done extends React.Component {
 						animate layer='success'>Submit</Button>
 				</div>
 
-				{this.state.ntfs.length > 0 ? (
+				{this.state.nfts.length > 0 ? (
 					<div style={{ marginTop: '2rem' }}>
-						<div className="label">YOUR NTFS</div>
-						{this.state.ntfs.map(item => (
+						<div className="label">YOUR NFTS</div>
+						{this.state.nfts.map(item => (
 							<div className="label">{item}</div>
 						))}
 					</div>

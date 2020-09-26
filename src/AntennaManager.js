@@ -6,8 +6,7 @@ const AntennaManager = {
 	antenna: null,
 
 	init: function () {
-		// this.antenna = new Antenna("http://api.iotex.one:80", {
-		this.antenna = new Antenna("http://api.testnet.iotex.one:80", {
+		this.antenna = new Antenna(Config.rpcURL, {
 			signer: new WsSignerPlugin()
 		});
 	},
