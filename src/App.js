@@ -8,11 +8,9 @@ import ContractPanel from './views/ContractPanel';
 import Done from './views/Done';
 import HomePage from './views/HomePage';
 import ERC721Panel from './views/ERC721Panel';
+import ERC721Done from './views/ERC721Done';
 
 function App() {
-  const [status, setStatus] = useState('initializing...')
-  const [view, setView] = useState(null)
-
   const onClickERC20 = () => {
     setView(<ContractPanel onCancel={onCancel} onSubmit={onSubmit} />)
   }
@@ -46,7 +44,7 @@ function App() {
 
     AntennaManager.deployERC721Contract(name, supply, contractAddress => {
       if (contractAddress) {
-        setView(<Done address={contractAddress} />)
+        setView(<ERC721Done onCancel={onCancel} address={contractAddress} />)
       }
     })
   }
@@ -54,6 +52,9 @@ function App() {
   const onCancel = () => {
     setView(generateHomePage)
   }
+
+  const [status, setStatus] = useState('initializing...')
+  const [view, setView] = useState(null)
 
   useEffect(() => {
     setStatus('Connecting wallet...')

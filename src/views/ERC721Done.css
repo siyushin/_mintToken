@@ -1,0 +1,9 @@
+.buttons {
+	margin-top: 2rem;
+	display   : flex;
+	column-gap: 1rem;
+}
+
+.label{
+	font-size: small;
+}

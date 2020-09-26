@@ -55,6 +55,25 @@ const AntennaManager = {
 		})
 	},
 
+	mint721: function (contractAddress, ipfsPath, callback) {
+		this.antenna.iotx.executeContract(
+			{
+				contractAddress: contractAddress,
+				amount: "0",
+				abi: Config.abi721,
+				method: "awardItem",
+				gasLimit: "1000000",
+				gasPrice: "1000000000000",
+				from: this.antenna.iotx.accounts[0].address
+			},
+			this.antenna.iotx.accounts[0].address,
+			ipfsPath).then(res => {
+				callback(res)
+			}).catch(err => {
+				console.error('生成NTF失败：', err)
+			})
+	},
+
 	getReceipt: function (hxid, callback) {
 		this.antenna.iotx.getReceiptByAction({
 			actionHash: hxid
