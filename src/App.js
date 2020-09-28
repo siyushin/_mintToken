@@ -3,6 +3,7 @@ import './App.css';
 import { ThemeProvider, createTheme } from 'arwes';
 import Arwes from 'arwes/lib/Arwes';
 import Loading from 'arwes/lib/Loading'
+import Button from 'arwes/lib/Button'
 import AntennaManager from './AntennaManager'
 import ContractPanel from './views/ContractPanel';
 import Done from './views/Done';
@@ -53,6 +54,31 @@ function App() {
     setView(generateHomePage)
   }
 
+  const reload = () => {
+    window.location.reload();
+  }
+
+  const checkWallet = (isRetry) => {
+    let n = AntennaManager.getAccounts().then(account => {
+      if (account) {
+        setStatus('ioPay connected: ', account.address)
+        setView(generateHomePage)
+      } else if (!isRetry) {
+        setView(<Button onClick={onClickConnectWallet}>Connect ioPay</Button>)
+      } else {
+        setView(<Button onClick={reload}>Reconnect</Button>)
+      }
+    })
+  }
+
+  const onClickConnectWallet = () => {
+    window.location.replace('iopay://')
+
+    setTimeout(() => {
+      checkWallet(true)
+    }, 10000);
+  }
+
   const [status, setStatus] = useState('initializing...')
   const [view, setView] = useState(null)
 
@@ -61,10 +87,8 @@ function App() {
     AntennaManager.init()
 
     setTimeout(() => {
-      setStatus('ioPay connected.')
-      // AntennaManager.getAccounts()
-      setView(generateHomePage)
-    }, 3000);
+      checkWallet(false)
+    }, 5000);
   }, [])
 
   return (
