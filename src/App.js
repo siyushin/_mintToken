@@ -81,7 +81,7 @@ function App() {
 
   const [status, setStatus] = useState('initializing...')
   const [view, setView] = useState(null)
-  // const [view, setView] = useState(<Done address={'adfadsfdsf'} />)
+  // const [view, setView] = useState(<ERC721Done address={'adfadsfdsf'} />)
 
   useEffect(() => {
     setStatus('Connecting wallet...')

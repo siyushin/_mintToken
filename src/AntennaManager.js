@@ -90,6 +90,23 @@ const AntennaManager = {
 		})
 	},
 
+	get721BalanceOf(contractAddress, callback) {
+		this.antenna.iotx.executeContract(
+			{
+				contractAddress: contractAddress,
+				amount: "0",
+				abi: Config.abi721,
+				method: "balanceOf",
+				gasLimit: "1000000",
+				gasPrice: "1000000000000",
+				from: this.antenna.iotx.accounts[0].address
+			},
+			this.antenna.iotx.accounts[0].address
+		).then(res => {
+			callback(res)
+		})
+	},
+
 	getReceipt: function (hxid, callback) {
 		this.antenna.iotx.getReceiptByAction({
 			actionHash: hxid

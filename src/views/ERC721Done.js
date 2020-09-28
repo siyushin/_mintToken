@@ -15,7 +15,7 @@ class ERC721Done extends React.Component {
 
 		this.state = {
 			ipfsPath: '',
-			nfts: []
+			balance: 0
 		}
 
 		this.onSubmit = this.onSubmit.bind(this)
@@ -40,10 +40,20 @@ class ERC721Done extends React.Component {
 	onSubmit() {
 		AntennaManager.mint721(this.props.address, this.state.ipfsPath, txid => {
 			this.state.nfts.push(txid)
+
+			setTimeout(() => {
+				this.getBalance()
+			}, 15000);
+		})
+	}
+
+	getBalance() {
+		AntennaManager.get721BalanceOf(this.props.address, res => {
 			this.setState({
-				nfts: [...this.state.nfts]
+				balance: res
 			})
 		})
+		return 0
 	}
 
 	render() {
@@ -88,12 +98,12 @@ class ERC721Done extends React.Component {
 						animate layer='success'>Submit</Button>
 				</div>
 
-				{this.state.nfts.length > 0 ? (
+				{this.props.address != 0 ? (
 					<div style={{ marginTop: '2rem' }}>
-						<div className="label">YOUR NFTS</div>
-						{this.state.nfts.map(item => (
-							<div className="label">{item}</div>
-						))}
+						<div className="label">YOUR NFT ASSETS</div>
+						<Frame animate={true} level={3} corners={4} layer='primary'>
+							<div className="label">{this.state.balance}</div>
+						</Frame>
 					</div>
 				) : null}
 			</div>
