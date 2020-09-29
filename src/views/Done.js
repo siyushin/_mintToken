@@ -39,7 +39,7 @@ class Done extends React.Component {
 				{this.props.address != '' ? (
 					<div>
 						<div className="block">
-							<Words animate className="description">YOUR ERC20 ASSETS</Words>
+							<Words animate className="description">YOUR XRC20 ASSETS</Words>
 						</div>
 						<div>
 							<Frame animate={true} level={3} corners={4} layer='primary'>

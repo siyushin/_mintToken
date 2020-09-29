@@ -9,8 +9,8 @@ class HomePage extends React.Component {
 
 	render() {
 		return (<div className="block">
-			<Button animate className="button" onClick={this.props.onClickERC20}>ERC 20</Button>
-			<Button animate className="button" onClick={this.props.onClickERC721}>ERC 721</Button>
+			<Button animate className="button" onClick={this.props.onClickERC20}>XRC 20</Button>
+			<Button animate className="button" onClick={this.props.onClickERC721}>XRC 721</Button>
 		</div>)
 	}
 }

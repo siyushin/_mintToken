@@ -24,6 +24,8 @@ class ContractPanel extends React.Component {
 	}
 
 	onChangeInput(event) {
+		let tempNumber = 0
+
 		switch (event.target.id) {
 			case 'name':
 				this.setState({
@@ -38,15 +40,29 @@ class ContractPanel extends React.Component {
 				break
 
 			case 'decimals':
-				this.setState({
-					decimals: event.target.value
-				})
+				tempNumber = parseInt(event.target.value)
+				if (!tempNumber) {
+					this.setState({
+						decimals: '18'
+					})
+				} else {
+					this.setState({
+						decimals: String(tempNumber)
+					})
+				}
 				break
 
 			case 'supply':
-				this.setState({
-					supply: event.target.value
-				})
+				tempNumber = parseInt(event.target.value)
+				if (!tempNumber) {
+					this.setState({
+						supply: '1000000000000000'
+					})
+				} else {
+					this.setState({
+						supply: String(tempNumber)
+					})
+				}
 				break
 
 			default:
@@ -80,13 +96,21 @@ class ContractPanel extends React.Component {
 							</Frame>
 						</td>
 						<td className="tr">
-							<Words animate className="description">This token symbol is already in use. We advise using another symbol.</Words>
+							<Words animate className="description">3-4 characters (example ETH, BTC, BAT, etc.). No spaces. Only alphanumerical characters.</Words>
 						</td>
 					</tr>
 					<tr>
 						<td width="40%" className="tr">
 							<Frame animate={true} level={3} corners={4} layer='primary'>
-								<input id="decimals" className="input" type="number" placeholder="Decimals" onChange={this.onChangeInput} />
+								<input
+									id="decimals"
+									className="input"
+									type="number"
+									onChange={this.onChangeInput}
+									min={0}
+									max={18}
+									step={1}
+									placeholder="Decimals" />
 							</Frame>
 						</td>
 						<td className="tr">
@@ -96,7 +120,15 @@ class ContractPanel extends React.Component {
 					<tr>
 						<td width="40%" className="tr">
 							<Frame animate={true} level={3} corners={4} layer='primary'>
-								<input id="supply" className="input" type="number" placeholder="Total Supply" onChange={this.onChangeInput} />
+								<input
+									id="supply"
+									className="input"
+									type="number"
+									onChange={this.onChangeInput}
+									min={1}
+									max={1000000000000000}
+									step={1}
+									placeholder="Total Supply" />
 							</Frame>
 						</td>
 						<td className="tr">

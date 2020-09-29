@@ -67,7 +67,7 @@ class ERC721Panel extends React.Component {
 							</Frame>
 						</td>
 						<td className="tr">
-							<Words animate className="description">This token symbol is already in use. We advise using another symbol.</Words>
+							<Words animate className="description">3-4 characters (example ETH, BTC, BAT, etc.). No spaces. Only alphanumerical characters.</Words>
 						</td>
 					</tr>
 				</table>

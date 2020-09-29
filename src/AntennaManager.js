@@ -33,8 +33,13 @@ const AntennaManager = {
 			data: null,
 			gasLimit: "1000000",
 			gasPrice: "1000000000000",
-		}, supply, name, symbol, decimals).then(contractAddress => {
-			this.getReceipt(contractAddress, callback)
+		}, supply, name, symbol, decimals).then(hxid => {
+			if (hxid) {
+				this.getReceipt(hxid, callback)
+			} else {
+				window.alert('No transaction ID.')
+				callback('ERROR')
+			}
 		}).catch(err => {
 			console.error('部署失败：', err)
 		})
@@ -52,7 +57,8 @@ const AntennaManager = {
 			if (hxid) {
 				this.getReceipt(hxid, callback)
 			} else {
-				return window.alert('No transaction ID.')
+				window.alert('No transaction ID.')
+				callback('ERROR')
 			}
 		}).catch(err => {
 			console.error('部署失败：', err)
@@ -115,7 +121,8 @@ const AntennaManager = {
 	getReceipt: function (hxid, callback) {
 		if (this.countRetry >= this.limitRetry) {
 			this.countRetry = 0
-			return window.alert('Cannot get a receipt of the transaction ' + hxid)
+			window.alert('Cannot get a receipt of the transaction ' + hxid)
+			callback('ERROR')
 		}
 
 		this.countRetry += 1
