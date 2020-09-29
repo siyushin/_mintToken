@@ -4,6 +4,8 @@ import Config from './Config'
 
 const AntennaManager = {
 	antenna: null,
+	countRetry: 0,
+	limitRetry: 20,
 
 	init: function () {
 		this.antenna = new Antenna(Config.rpcURL, {
@@ -20,7 +22,6 @@ const AntennaManager = {
 			return;
 		}
 
-		console.log(accounts[0].address)
 		return accounts[0]
 	},
 
@@ -47,8 +48,12 @@ const AntennaManager = {
 			data: null,
 			gasLimit: "1000000",
 			gasPrice: "1000000000000",
-		}, supply, name).then(contractAddress => {
-			this.getReceipt(contractAddress, callback)
+		}, supply, name).then(hxid => {
+			if (hxid) {
+				this.getReceipt(hxid, callback)
+			} else {
+				return window.alert('No transaction ID.')
+			}
 		}).catch(err => {
 			console.error('部署失败：', err)
 		})
@@ -108,12 +113,29 @@ const AntennaManager = {
 	},
 
 	getReceipt: function (hxid, callback) {
+		if (this.countRetry >= this.limitRetry) {
+			this.countRetry = 0
+			return window.alert('Cannot get a receipt of the transaction ' + hxid)
+		}
+
+		this.countRetry += 1
+
 		this.antenna.iotx.getReceiptByAction({
 			actionHash: hxid
 		}).then(res => {
-			callback(res.receiptInfo.receipt.contractAddress)
+			if (res && res.receiptInfo && res.receiptInfo.receipt && res.receiptInfo.receipt.contractAddress) {
+				this.countRetry = 0
+				callback(res.receiptInfo.receipt.contractAddress)
+			} else {
+				console.warn('获取的交易详情数据异常：', res)
+
+				setTimeout(() => {
+					this.getReceipt(hxid, callback)
+				}, 3000);
+			}
 		}).catch(errTx => {
 			console.error('获取交易详情失败：', errTx)
+
 			setTimeout(() => {
 				this.getReceipt(hxid, callback)
 			}, 3000);
