@@ -1,9 +1,29 @@
 .buttons {
-	margin-top: 2rem;
-	display   : flex;
-	column-gap: 1rem;
+	display        : flex;
+	flex-direction : row;
+	justify-content: flex-end;
+	column-gap     : 1rem;
+	width          : 100%;
 }
 
-.label{
+.full {
+	width: 36.6rem;
+}
+
+.output {
+	font-family: 'Courier New', Courier, monospace;
+	padding    : 1rem;
+	text-align: left;
+	font-size: small;
+}
+
+.block {
+	display       : flex;
+	flex-direction: column;
+	row-gap       : 1rem;
+	align-items   : flex-start;
+}
+
+.label {
 	font-size: small;
 }
