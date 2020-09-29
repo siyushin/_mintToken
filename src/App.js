@@ -64,7 +64,7 @@ function App() {
         setStatus('ioPay connected: ', account.address)
         setView(generateHomePage)
       } else if (!isRetry) {
-        setView(<Button onClick={onClickConnectWallet}>Connect ioPay</Button>)
+        setView(<Button onClick={onClickConnectWallet}>Open ioPay</Button>)
       } else {
         setView(<Button onClick={reload}>Reconnect</Button>)
       }
