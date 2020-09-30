@@ -41,7 +41,7 @@ const AntennaManager = {
 				callback('ERROR')
 			}
 		}).catch(err => {
-			console.error('部署失败：', err)
+			console.error(err)
 		})
 	},
 
@@ -61,7 +61,7 @@ const AntennaManager = {
 				callback('ERROR')
 			}
 		}).catch(err => {
-			console.error('部署失败：', err)
+			console.error(err)
 		})
 	},
 
@@ -80,7 +80,7 @@ const AntennaManager = {
 			ipfsPath).then(res => {
 				callback(res)
 			}).catch(err => {
-				console.error('生成NTF失败：', err)
+				console.error(err)
 			})
 	},
 
@@ -134,14 +134,14 @@ const AntennaManager = {
 				this.countRetry = 0
 				callback(res.receiptInfo.receipt.contractAddress)
 			} else {
-				console.warn('获取的交易详情数据异常：', res)
+				console.warn('The receript data is incorrect：', res)
 
 				setTimeout(() => {
 					this.getReceipt(hxid, callback)
 				}, 3000);
 			}
 		}).catch(errTx => {
-			console.error('获取交易详情失败：', errTx)
+			console.error('The transaction id is maybe incorrect.', errTx)
 
 			setTimeout(() => {
 				this.getReceipt(hxid, callback)
