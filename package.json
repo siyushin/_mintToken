@@ -13,7 +13,8 @@
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.2.0",
     "react-scripts": "3.4.3",
-    "websocket-as-promised": "^1.0.1"
+    "websocket-as-promised": "^1.0.1",
+    "typescript": "^4.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,9 +36,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "typescript": "^4.0.3"
   },
   "homepage": "./"
 }
