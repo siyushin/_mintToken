@@ -27,7 +27,11 @@ class ERC721Done extends React.Component {
 	}
 
 	componentDidMount() {
-		this.theIPFS = ipfs({ host: Config.ipfsURL, port: Config.ipfsPort, protocol: Config.ipfsScheme });
+		this.theIPFS = ipfs({
+			host: Config.ipfsURL,
+			port: Config.ipfsPort,
+			protocol: Config.ipfsScheme
+		});
 	}
 
 	uploadImage(acceptedFiles) {

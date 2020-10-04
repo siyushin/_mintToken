@@ -1,6 +1,7 @@
 ## Equirement
 
-Running `MintToken` must be based on `ioPay`, please make sure it has been installed and correctly configured.
+* Running `MintToken` must be based on `ioPay` , please make sure it has been installed and correctly configured.
+* Please modify the configuration of IPFS and RPC in the `/src/config.js` .
 
 ## Available Scripts
 

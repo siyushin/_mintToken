@@ -1,6 +1,7 @@
 import Antenna from 'iotex-antenna'
 import { WsSignerPlugin } from 'iotex-antenna/lib/plugin/ws';
-import Config from './Config'
+import AbiConfig from './AbiConfig'
+import Config from './Config';
 
 const AntennaManager = {
 	antenna: null,
@@ -29,7 +30,7 @@ const AntennaManager = {
 		this.antenna.iotx.deployContract({
 			from: this.getAccounts().address,
 			amount: "0",
-			abi: Config.abi,
+			abi: AbiConfig.abi,
 			data: null,
 			gasLimit: "1000000",
 			gasPrice: "1000000000000",
@@ -49,7 +50,7 @@ const AntennaManager = {
 		this.antenna.iotx.deployContract({
 			from: this.getAccounts().address,
 			amount: "0",
-			abi: Config.abi721,
+			abi: AbiConfig.abi721,
 			data: null,
 			gasLimit: "1000000",
 			gasPrice: "1000000000000",
@@ -70,7 +71,7 @@ const AntennaManager = {
 			{
 				contractAddress: contractAddress,
 				amount: "0",
-				abi: Config.abi721,
+				abi: AbiConfig.abi721,
 				method: "awardItem",
 				gasLimit: "1000000",
 				gasPrice: "1000000000000",
@@ -89,7 +90,7 @@ const AntennaManager = {
 			{
 				contractAddress: contractAddress,
 				amount: "0",
-				abi: Config.abi,
+				abi: AbiConfig.abi,
 				method: "balanceOf",
 				gasLimit: "1000000",
 				gasPrice: "1000000000000",
@@ -106,7 +107,7 @@ const AntennaManager = {
 			{
 				contractAddress: contractAddress,
 				amount: "0",
-				abi: Config.abi721,
+				abi: AbiConfig.abi721,
 				method: "balanceOf",
 				gasLimit: "1000000",
 				gasPrice: "1000000000000",
