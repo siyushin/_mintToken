@@ -71,7 +71,7 @@ class ContractPanel extends React.Component {
 	}
 
 	onSubmit() {
-		this.props.onSubmit(this.state.name, this.state.symbol, this.state.decimals, this.state.supply)
+		this.props.onSubmit(this.state.name, this.state.symbol, parseInt(this.state.decimals), parseInt(this.state.supply))
 	}
 
 	render() {

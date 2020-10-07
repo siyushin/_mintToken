@@ -1,4 +1,6 @@
 import Antenna from 'iotex-antenna'
+import { Account } from 'iotex-antenna/lib/account/account';
+import { Contract } from 'iotex-antenna/lib/contract/contract';
 import { WsSignerPlugin } from 'iotex-antenna/lib/plugin/ws';
 import AbiConfig from './AbiConfig'
 import Config from './Config';
@@ -6,7 +8,7 @@ import Config from './Config';
 const AntennaManager = {
 	antenna: null,
 	countRetry: 0,
-	limitRetry: 20,
+	limitRetry: 5,
 
 	init: function () {
 		this.antenna = new Antenna(Config.rpcURL, {
@@ -31,16 +33,11 @@ const AntennaManager = {
 			from: this.getAccounts().address,
 			amount: "0",
 			abi: AbiConfig.abi,
-			data: null,
-			gasLimit: "1000000",
+			data: Buffer(AbiConfig.bytecode, 'hex'),
+			gasLimit: "4000000",
 			gasPrice: "1000000000000",
 		}, supply, name, symbol, decimals).then(hxid => {
-			if (hxid) {
-				this.getReceipt(hxid, callback)
-			} else {
-				window.alert('No transaction ID.')
-				callback('ERROR')
-			}
+			return callback(hxid)
 		}).catch(err => {
 			console.error(err)
 		})
@@ -51,16 +48,11 @@ const AntennaManager = {
 			from: this.getAccounts().address,
 			amount: "0",
 			abi: AbiConfig.abi721,
-			data: null,
-			gasLimit: "1000000",
+			data: Buffer(AbiConfig.bytecode721, 'hex'),
+			gasLimit: "4000000",
 			gasPrice: "1000000000000",
 		}, supply, name).then(hxid => {
-			if (hxid) {
-				this.getReceipt(hxid, callback)
-			} else {
-				window.alert('No transaction ID.')
-				callback('ERROR')
-			}
+			return callback(hxid)
 		}).catch(err => {
 			console.error(err)
 		})
@@ -115,15 +107,25 @@ const AntennaManager = {
 			},
 			this.antenna.iotx.accounts[0].address
 		).then(res => {
-			callback(res)
+			callback(parseInt(res))
+		})
+	},
+
+	getActions: function (hxid, callback) {
+		this.antenna.iotx.getActions({
+			byHash: {
+				actionHash: hxid,
+				checkingPending: true
+			}
+		}).then(res => {
+			return callback(res)
 		})
 	},
 
 	getReceipt: function (hxid, callback) {
 		if (this.countRetry >= this.limitRetry) {
 			this.countRetry = 0
-			window.alert('Cannot get a receipt of the transaction ' + hxid)
-			callback('ERROR')
+			return callback('ERROR')
 		}
 
 		this.countRetry += 1
@@ -134,6 +136,9 @@ const AntennaManager = {
 			if (res && res.receiptInfo && res.receiptInfo.receipt && res.receiptInfo.receipt.contractAddress) {
 				this.countRetry = 0
 				callback(res.receiptInfo.receipt.contractAddress)
+			} else if (res && res.receiptInfo && res.receiptInfo.receipt && res.receiptInfo.receipt.status === 1) {
+				this.countRetry = 0
+				callback(res.receiptInfo.receipt.status)
 			} else {
 				console.warn('The receript data is incorrect：', res)
 
