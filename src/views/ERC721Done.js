@@ -10,6 +10,7 @@ import Dropzone from 'react-dropzone';
 import ipfs from 'ipfs-http-client'
 import AntennaManager from '../AntennaManager';
 import Config from '../Config';
+import Utilities from '../Utilities';
 
 class ERC721Done extends React.Component {
 	constructor(props) {
@@ -23,7 +24,7 @@ class ERC721Done extends React.Component {
 			name: '',
 			description: '',
 			isChecking: true,
-			address: ''
+			address: props.deployedAddress
 		}
 
 		this.onSubmit = this.onSubmit.bind(this)
@@ -38,7 +39,11 @@ class ERC721Done extends React.Component {
 			protocol: Config.ipfsScheme
 		});
 
-		this.getReceipt()
+		if (!this.state.address) {
+			this.getReceipt()
+		} else {
+			this.getBalance(this.state.address)
+		}
 	}
 
 	getReceipt() {
@@ -49,6 +54,11 @@ class ERC721Done extends React.Component {
 				})
 			} else {
 				this.setState({
+					address: res
+				})
+
+				Utilities.saveAddresses('XRC721', {
+					tokenName: this.props.tokenName,
 					address: res
 				})
 			}
@@ -166,12 +176,14 @@ class ERC721Done extends React.Component {
 						</div>
 						<div>
 							<Frame animate={true} level={3} corners={4} layer='primary'>
-								<Words animate className="label">{this.state.address}</Words>
+								<div className="status">
+									<Link href={'https://iotexscan.io/address/' + this.state.address} target="_blank">{this.state.address}</Link>
+								</div>
 							</Frame>
 						</div>
 
 						<div style={{ marginTop: '2rem', marginBottom: 'rem' }}>
-							<Words animate className="description">MINT THE FIRST</Words>
+							<Words animate className="description">MINT A TOKEN</Words>
 						</div>
 
 						<div className="block">

@@ -1,6 +1,5 @@
 import Antenna from 'iotex-antenna'
-import { Account } from 'iotex-antenna/lib/account/account';
-import { Contract } from 'iotex-antenna/lib/contract/contract';
+import { validateAddress } from 'iotex-antenna/lib/account/utils'
 import { WsSignerPlugin } from 'iotex-antenna/lib/plugin/ws';
 import AbiConfig from './AbiConfig'
 import Config from './Config';
@@ -26,6 +25,10 @@ const AntennaManager = {
 		}
 
 		return accounts[0]
+	},
+
+	isValidateAddress: function (address) {
+		return validateAddress(address)
 	},
 
 	deployContract: function (name, symbol, decimals, supply, callback) {

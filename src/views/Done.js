@@ -6,6 +6,7 @@ import Link from 'arwes/lib/Link'
 import Line from 'arwes/lib/Line'
 import './Done.css'
 import AntennaManager from '../AntennaManager';
+import Utilities from '../Utilities';
 
 class Done extends React.Component {
 	constructor(props) {
@@ -14,14 +15,18 @@ class Done extends React.Component {
 		this.state = {
 			balance: 0,
 			isChecking: true,
-			address: ''
+			address: props.deployedAddress
 		}
 
 		this.onClickRetry = this.onClickRetry.bind(this)
 	}
 
 	componentDidMount() {
-		this.getReceipt()
+		if (!this.state.address) {
+			this.getReceipt()
+		} else {
+			this.getBalance(this.state.address)
+		}
 	}
 
 	getReceipt() {
@@ -34,6 +39,11 @@ class Done extends React.Component {
 				this.getBalance(res)
 
 				this.setState({
+					address: res
+				})
+
+				Utilities.saveAddresses('XRC20', {
+					tokenName: this.props.tokenName,
 					address: res
 				})
 			}
@@ -81,13 +91,15 @@ class Done extends React.Component {
 					</div>
 					<div>
 						<Frame animate={true} level={3} corners={4} layer='primary'>
-							<Words animate className="label">{this.state.address}</Words>
+							<div className="status">
+								<Link href={'https://iotexscan.io/address/' + this.state.address} target="_blank">{this.state.address}</Link>
+							</div>
 						</Frame>
 					</div>
 
 					<div>
 						<div className="h3">
-							<Words animate className="description">YOUR XRC20 ASSETS</Words>
+							<Words animate className="description">{'The total supply of your ' + this.props.tokenName + ' tokens is'}</Words>
 						</div>
 						<div>
 							<Frame animate={true} level={3} corners={4} layer='primary'>

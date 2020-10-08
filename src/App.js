@@ -22,6 +22,8 @@ function App() {
 
   const generateHomePage = () => {
     return (<HomePage
+      jumpTo={jumpTo}
+      jumpTo721={jumpTo721}
       onClickERC20={onClickERC20}
       onClickERC721={onClickERC721} />)
   }
@@ -32,12 +34,20 @@ function App() {
     }} />)
   }
 
+  const jumpTo = deployedContract => {
+    setView(<Done tokenName={deployedContract.tokenName} deployedAddress={deployedContract.address} />)
+  }
+
+  const jumpTo721 = deployedContract => {
+    setView(<ERC721Done onCancel={onCancel} tokenName={deployedContract.tokenName} deployedAddress={deployedContract.address} />)
+  }
+
   const onSubmit = (name, symbol, decimals, supply) => {
     // setView(generateLoading)
 
     AntennaManager.deployContract(name, symbol, decimals, supply, hxid => {
       if (hxid && hxid !== 'ERROR') {
-        setView(<Done hxid={hxid} />)
+        setView(<Done tokenName={name} hxid={hxid} />)
       } else {
         setView(<ContractPanel onCancel={onCancel} onSubmit={onSubmit} />)
       }
@@ -49,7 +59,7 @@ function App() {
 
     AntennaManager.deployERC721Contract(name, supply, contractAddress => {
       if (contractAddress && contractAddress !== 'ERROR') {
-        setView(<ERC721Done onCancel={onCancel} hxid={contractAddress} />)
+        setView(<ERC721Done tokenName={name} onCancel={onCancel} hxid={contractAddress} />)
       } else {
         setView(<ERC721Panel onCancel={onCancel} onSubmit={onSubmitERC721} />)
       }
@@ -96,7 +106,8 @@ function App() {
 
     setTimeout(() => {
       checkWallet(false)
-      // setView(<ERC721Done hxid="1da9ced3f2c5cf7d24f75dc7cb8e8069c8b31a8c088d91807183a5b4ee519804" />)
+      // setView(<ERC721Done tokenName="RMB" hxid="1da9ced3f2c5cf7d24f75dc7cb8e8069c8b31a8c088d91807183a5b4ee519804" />)
+      // setView(<Done tokenName="RMB" hxid="0cad99213f1e7e26296c8168206259a2a3f7e4602abebdfb2ad095f0dd69a4be" />)
     }, 5000);
   }, [])
 
