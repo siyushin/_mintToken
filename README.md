@@ -1,28 +1,29 @@
-## Equirement
+# MintToken
 
-* Running `MintToken` must be based on `ioPay` , please make sure it has been installed and correctly configured.
-* Please modify the configuration of IPFS and RPC in the `/src/config.js` .
+`MintToken` is an innovative and open-source dapp built on top of [IoTeX](https://iotex.io) blockchain for the issuance of new assets.
 
-## Available Scripts
+## Use
 
-In the project directory, you can run:
+To use it, one has to properly install [ioPay](https://iopay.iotex.io), create an IoTeX account (make sure you have few $IOTX in the account for gas fees) and visit https://minttoken.io. After filling in desired parameters, and clicking `Submit`, `ioPay` will be invoked to deployed the corresponding smart contracts to IoTeX blockchain.
 
-### `yarn start`
+## Develop
+This project is built based on the [iotex-dapp-sample](https://github.com/iotexproject/iotex-dapp-sample) framework.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. To run it locally, one needs to run
+```
+yarn start
+```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+2. Open [http://localhost:3000](http://localhost:3000) to view it in the browser. The page will reload if you make edits, and you will also see lint errors in the console which don't matter.
 
-### `yarn build`
+3. Edit `/src/config.js` to set IPFS and IoTeX endpoints.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance. 
+4. Optionally, one uses `yarn build` to build the app for production to the `build` folder. It correctly bundles React in production mode and optimizes the build for the best performance.
 
-You could deploy the `build` folder on any Nginx or other HTTP services.
+## Deploy
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+This Dapp can be simply deployed to [Heroku](https://herokuapp.com/). One has to make sure `https://buildpack-registry.s3.amazonaws.com/buildpacks/mars/create-react-app.tgz` is added to `Buildpacks` under `Settings` section.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Feedback
+
+Feedback and suggestions are welcomed! Please reach out to us on https://community.iotex.io/ !

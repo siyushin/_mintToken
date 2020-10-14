@@ -43,8 +43,6 @@ function App() {
   }
 
   const onSubmit = (name, symbol, decimals, supply) => {
-    // setView(generateLoading)
-
     AntennaManager.deployContract(name, symbol, decimals, supply, hxid => {
       if (hxid && hxid !== 'ERROR') {
         setView(<Done tokenName={name} hxid={hxid} />)
@@ -55,8 +53,6 @@ function App() {
   }
 
   const onSubmitERC721 = (name, supply) => {
-    // setView(generateLoading)
-
     AntennaManager.deployERC721Contract(name, supply, contractAddress => {
       if (contractAddress && contractAddress !== 'ERROR') {
         setView(<ERC721Done tokenName={name} onCancel={onCancel} hxid={contractAddress} />)
@@ -97,8 +93,6 @@ function App() {
 
   const [status, setStatus] = useState('initializing...')
   const [view, setView] = useState(null)
-  // const [view, setView] = useState(<ERC721Done address={'test_address'} />)
-  // const [view, setView] = useState(<Done hxid="0cad99213f1e7e26296c8168206259a2a3f7e4602abebdfb2ad095f0dd69a4be" />)
 
   useEffect(() => {
     setStatus('Connecting wallet...')
@@ -106,8 +100,6 @@ function App() {
 
     setTimeout(() => {
       checkWallet(false)
-      // setView(<ERC721Done tokenName="RMB" hxid="1da9ced3f2c5cf7d24f75dc7cb8e8069c8b31a8c088d91807183a5b4ee519804" />)
-      // setView(<Done tokenName="RMB" hxid="0cad99213f1e7e26296c8168206259a2a3f7e4602abebdfb2ad095f0dd69a4be" />)
     }, 5000);
   }, [])
 
