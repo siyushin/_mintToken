@@ -100,6 +100,7 @@ function App() {
 
     setTimeout(() => {
       checkWallet(false)
+      // setView(<Done tokenName="tokenName" deployedAddress="io156w885vnls6f7zt7kad40z3ln75uum4ltt92tt" />)
     }, 5000);
   }, [])
 

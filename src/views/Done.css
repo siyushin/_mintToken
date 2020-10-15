@@ -19,3 +19,15 @@
 	margin-top   : 3rem;
 	margin-bottom: 1rem;
 }
+
+.transferPanel {
+	display       : flex;
+	flex-direction: column;
+	row-gap       : 1rem;
+	padding       : 2rem;
+}
+
+.smallButtonPanel {
+	display        : flex;
+	justify-content: flex-end;
+}

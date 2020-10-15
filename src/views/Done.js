@@ -4,6 +4,8 @@ import Frame from 'arwes/lib/Frame'
 import Loading from 'arwes/lib/Loading'
 import Link from 'arwes/lib/Link'
 import Line from 'arwes/lib/Line'
+import Button from 'arwes/lib/Button'
+import Project from 'arwes/lib/Project'
 import './Done.css'
 import AntennaManager from '../AntennaManager';
 import Utilities from '../Utilities';
@@ -12,13 +14,22 @@ class Done extends React.Component {
 	constructor(props) {
 		super(props)
 
+		this.theNumberInput = null
+		this.theAddressInput = null
+
 		this.state = {
 			balance: 0,
 			isChecking: true,
-			address: props.deployedAddress
+			address: props.deployedAddress,
+			toTransfer: 0,
+			toAddress: ''
 		}
 
 		this.onClickRetry = this.onClickRetry.bind(this)
+		this.onChangeInputCount = this.onChangeInputCount.bind(this)
+		this.onChangeInputAddress = this.onChangeInputAddress.bind(this)
+		this.isDisable = this.isDisable.bind(this)
+		this.onTransfer = this.onTransfer.bind(this)
 	}
 
 	componentDidMount() {
@@ -66,6 +77,45 @@ class Done extends React.Component {
 		})
 	}
 
+	onChangeInputCount(event) {
+		let tempNumber = parseInt(event.target.value)
+		if (tempNumber) {
+			this.setState({
+				toTransfer: tempNumber
+			})
+		}
+	}
+
+	onChangeInputAddress(event) {
+		this.setState({
+			toAddress: event.target.value
+		})
+	}
+
+	isDisable() {
+		return this.state.toTransfer > 0 && this.state.toAddress != ''
+	}
+
+	onTransfer() {
+		console.log(this.state.toTransfer, this.state.toAddress)
+
+		if (!AntennaManager.isValidateAddress(this.state.toAddress)) {
+			return window.alert('Invalid address.')
+		} else if (!this.state.toTransfer > 0) {
+			return window.alert('The transfer amount must be mort than 0.')
+		} else {
+			AntennaManager.transfer(this.state.address, this.state.toAddress, this.state.toTransfer, res => {
+				this.theNumberInput.value = 0
+				this.theAddressInput.value = ''
+				this.setState({
+					balance: this.state.balance - this.state.toTransfer,
+					toAddress: '',
+					toTransfer: 0
+				})
+			})
+		}
+	}
+
 	render() {
 		return (<div>
 			<Line animate layer='success' />
@@ -97,7 +147,7 @@ class Done extends React.Component {
 						</Frame>
 					</div>
 
-					<div>
+					<div style={{ marginBottom: '1rem' }}>
 						<div className="h3">
 							<Words animate className="description">{'The total supply of your ' + this.props.tokenName + ' tokens is'}</Words>
 						</div>
@@ -107,6 +157,42 @@ class Done extends React.Component {
 							</Frame>
 						</div>
 					</div>
+
+					{this.state.balance > 0 && (
+						<Frame animate={true} level={3} corners={1} layer='secondary'>
+							<div className="transferPanel">
+								<Words animate className="description">Transfer</Words>
+
+								<Frame animate={true} level={3} corners={4} layer='secondary'>
+									<input
+										ref={node => { this.theNumberInput = node }}
+										className="input"
+										type="number"
+										onChange={this.onChangeInputCount}
+										min={0}
+										max={this.state.balance}
+										step={1}
+										placeholder={'0 ' + this.props.tokenName} />
+								</Frame>
+
+								<Frame animate={true} level={3} corners={4} layer='secondary'>
+									<input
+										ref={node => { this.theAddressInput = node }}
+										className="input"
+										type="text"
+										onChange={this.onChangeInputAddress}
+										placeholder="Public Address(0x...)" />
+								</Frame>
+
+								<div className="smallButtonPanel">
+									<Button
+										disabled={!this.isDisable()}
+										onClick={this.onTransfer}
+										animate layer='success'>Transfer</Button>
+								</div>
+							</div>
+						</Frame>
+					)}
 				</div>
 			)}
 		</div >)

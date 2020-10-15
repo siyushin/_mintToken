@@ -80,7 +80,7 @@ const AntennaManager = {
 			})
 	},
 
-	getBalanceOf(contractAddress, callback) {
+	getBalanceOf: function (contractAddress, callback) {
 		this.antenna.iotx.executeContract(
 			{
 				contractAddress: contractAddress,
@@ -97,7 +97,21 @@ const AntennaManager = {
 		})
 	},
 
-	get721BalanceOf(contractAddress, callback) {
+	transfer: function (contractAddress, toAddress, amount, callback) {
+		this.antenna.iotx.executeContract({
+			contractAddress: contractAddress,
+			amount: "0",
+			abi: AbiConfig.abi,
+			method: "transfer",
+			gasLimit: "1000000",
+			gasPrice: "1000000000000",
+			from: this.antenna.iotx.accounts[0].address
+		}, toAddress, amount).then(res => {
+			return callback(res)
+		})
+	},
+
+	get721BalanceOf: function (contractAddress, callback) {
 		this.antenna.iotx.executeContract(
 			{
 				contractAddress: contractAddress,
