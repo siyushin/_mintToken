@@ -18,18 +18,21 @@ class ERC721Done extends React.Component {
 
 		this.theIPFS = null
 		this.theJson = null
+		this.theAddressInput = null
 		this.state = {
 			ipfsPath: '',
 			balance: 0,
 			name: '',
 			description: '',
 			isChecking: true,
-			address: props.deployedAddress
+			address: props.deployedAddress,
+			toAddress: ''
 		}
 
 		this.onSubmit = this.onSubmit.bind(this)
 		this.onChangeInput = this.onChangeInput.bind(this)
 		this.onClickRetry = this.onClickRetry.bind(this)
+		this.onChangeInputAddress = this.onChangeInputAddress.bind(this)
 	}
 
 	componentDidMount() {
@@ -88,17 +91,31 @@ class ERC721Done extends React.Component {
 	}
 
 	onSubmit() {
-		const buf = Buffer(JSON.stringify(this.theJson), 'utf-8')
-		this.theIPFS.add(buf).then(file => {
-			if (file && file.path) {
-				AntennaManager.mint721(this.state.address, file.path, txid => {
-					this.getReceiptOfMint(txid)
-					this.setState({
-						balance: -1
+		let tempAddress = null
+		if (!this.state.toAddress || (this.state.toAddress && AntennaManager.isValidateAddress(this.state.toAddress))) {
+			tempAddress = this.state.toAddress
+			const buf = Buffer(JSON.stringify(this.theJson), 'utf-8')
+			this.theIPFS.add(buf).then(file => {
+				if (file && file.path) {
+					AntennaManager.mint721(this.state.address, file.path, tempAddress, txid => {
+						if (!tempAddress) {
+							this.getReceiptOfMint(txid)
+							this.setState({
+								balance: -1
+							})
+						} else {
+							window.alert('the transaction (' + txid + ') is being confirmed...')
+							this.theAddressInput.value = ''
+							this.setState({
+								toAddress: ''
+							})
+						}
 					})
-				})
-			}
-		})
+				}
+			})
+		} else {
+			return window.alert('Invalid address.')
+		}
 	}
 
 	getReceiptOfMint(hxid) {
@@ -149,6 +166,12 @@ class ERC721Done extends React.Component {
 		}
 
 		return JSON.stringify(this.theJson)
+	}
+
+	onChangeInputAddress(event) {
+		this.setState({
+			toAddress: event.target.value
+		})
 	}
 
 	render() {
@@ -225,9 +248,20 @@ class ERC721Done extends React.Component {
 							</div>
 
 							<div className="buttons">
+								<Frame animate={true} level={3} corners={4} layer='secondary'>
+									<input
+										ref={node => { this.theAddressInput = node }}
+										className="input"
+										type="text"
+										onChange={this.onChangeInputAddress}
+										size="30"
+										placeholder="Assign to another Address" />
+								</Frame>
+
 								<Button
 									onClick={this.props.onCancel}
 									animate layer='success'>Cancel</Button>
+
 								<Button
 									disabled={this.state.ipfsPath === ''}
 									onClick={this.onSubmit}

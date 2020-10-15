@@ -61,18 +61,17 @@ const AntennaManager = {
 		})
 	},
 
-	mint721: function (contractAddress, ipfsPath, callback) {
-		this.antenna.iotx.executeContract(
-			{
-				contractAddress: contractAddress,
-				amount: "0",
-				abi: AbiConfig.abi721,
-				method: "awardItem",
-				gasLimit: "1000000",
-				gasPrice: "1000000000000",
-				from: this.antenna.iotx.accounts[0].address
-			},
-			this.antenna.iotx.accounts[0].address,
+	mint721: function (contractAddress, ipfsPath, toAddress, callback) {
+		this.antenna.iotx.executeContract({
+			contractAddress: contractAddress,
+			amount: "0",
+			abi: AbiConfig.abi721,
+			method: "awardItem",
+			gasLimit: "1000000",
+			gasPrice: "1000000000000",
+			from: this.antenna.iotx.accounts[0].address
+		},
+			toAddress ? toAddress : this.antenna.iotx.accounts[0].address,
 			ipfsPath).then(res => {
 				callback(res)
 			}).catch(err => {

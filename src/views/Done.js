@@ -181,7 +181,7 @@ class Done extends React.Component {
 										className="input"
 										type="text"
 										onChange={this.onChangeInputAddress}
-										placeholder="Public Address(0x...)" />
+										placeholder="Public Address" />
 								</Frame>
 
 								<div className="smallButtonPanel">

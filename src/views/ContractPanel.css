@@ -16,6 +16,7 @@
 
 .tr {
 	padding-bottom: 1rem;
+	padding-left  : 1rem;
 }
 
 .input {
@@ -28,9 +29,8 @@
 }
 
 .description {
-	font-size     : 0.8rem;
-	text-align    : left;
-	/* margin-left: 1rem; */
+	font-size : 0.8rem;
+	text-align: left;
 }
 
 .buttonPanel {
