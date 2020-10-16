@@ -147,7 +147,7 @@ class Done extends React.Component {
 						</Frame>
 					</div>
 
-					<div style={{ marginBottom: '1rem' }}>
+					<div style={{ marginBottom: '1rem', width: '25rem' }}>
 						<div className="h3">
 							<Words animate className="description">{'The total supply of your ' + this.props.tokenName + ' tokens is'}</Words>
 						</div>
@@ -159,11 +159,11 @@ class Done extends React.Component {
 					</div>
 
 					{this.state.balance > 0 && (
-						<Frame animate={true} level={3} corners={1} layer='secondary'>
+						<Frame animate={true} level={3} corners={4} layer='primary'>
 							<div className="transferPanel">
-								<Words animate className="description">Transfer</Words>
+								<Words animate className="description">Transfer Token</Words>
 
-								<Frame animate={true} level={3} corners={4} layer='secondary'>
+								<Frame animate={true} level={3} corners={1} layer='primary'>
 									<input
 										ref={node => { this.theNumberInput = node }}
 										className="input"
@@ -175,13 +175,13 @@ class Done extends React.Component {
 										placeholder={'0 ' + this.props.tokenName} />
 								</Frame>
 
-								<Frame animate={true} level={3} corners={4} layer='secondary'>
+								<Frame animate={true} level={3} corners={1} layer='primary'>
 									<input
 										ref={node => { this.theAddressInput = node }}
 										className="input"
 										type="text"
 										onChange={this.onChangeInputAddress}
-										placeholder="Public Address" />
+										placeholder="IoTeX Address" />
 								</Frame>
 
 								<div className="smallButtonPanel">

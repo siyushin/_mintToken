@@ -6,6 +6,10 @@
 	width          : 100%;
 }
 
+.normalButton {
+	min-width: 7rem;
+}
+
 .full {
 	width: 36.6rem;
 }
@@ -13,8 +17,8 @@
 .output {
 	font-family: 'Courier New', Courier, monospace;
 	padding    : 1rem;
-	text-align: left;
-	font-size: small;
+	text-align : left;
+	font-size  : small;
 }
 
 .block {

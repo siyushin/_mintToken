@@ -247,25 +247,29 @@ class ERC721Done extends React.Component {
 								</Frame>
 							</div>
 
-							<div className="buttons">
-								<Frame animate={true} level={3} corners={4} layer='secondary'>
+							<div className="full">
+								<Frame animate={true} level={1} corners={1} layer='primary'>
 									<input
 										ref={node => { this.theAddressInput = node }}
 										className="input"
 										type="text"
 										onChange={this.onChangeInputAddress}
-										size="30"
-										placeholder="Assign to another Address" />
+										placeholder="Transfer To (Optional)" />
 								</Frame>
+							</div>
 
+							<div className="buttons">
 								<Button
 									onClick={this.props.onCancel}
-									animate layer='success'>Cancel</Button>
+									className="normalButton"
+									animate>Cancel</Button>
 
 								<Button
 									disabled={this.state.ipfsPath === ''}
 									onClick={this.onSubmit}
-									animate layer='success'>Mint</Button>
+									className="normalButton"
+									animate
+									layer='success'>Mint</Button>
 							</div>
 
 							<Line animate layer='success' />
