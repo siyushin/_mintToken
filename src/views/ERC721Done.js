@@ -153,6 +153,9 @@ class ERC721Done extends React.Component {
 				})
 				break
 
+			case 'fileToUpload':
+				this.uploadImage(event.target.files)
+
 			default:
 				break
 		}
@@ -181,7 +184,7 @@ class ERC721Done extends React.Component {
 
 				{!this.state.address && (
 					<div className="status">
-						<span>Checking: {this.props.hxid}&nbsp;&nbsp;</span>
+						<span>Checking: {Utilities.isIoPayMobile() ? this.props.hxid.substr(0, 10) + '...' : this.props.hxid}&nbsp;&nbsp;</span>
 						<span>
 							{this.state.isChecking ? (
 								<Loading animate small />
@@ -211,44 +214,49 @@ class ERC721Done extends React.Component {
 
 						<div className="block">
 							<div className="full">
-								<Frame animate={true} level={3} corners={4} layer='primary'>
+								<Frame animate={true} level={3} corners={4} layer='primary' className="inputWithinFrame">
 									<input id="name" className="input" type="text" placeholder="Token Name" onChange={this.onChangeInput} />
 								</Frame>
 							</div>
 
 							<div className="full">
-								<Frame animate={true} level={3} corners={4} layer='primary'>
+								<Frame animate={true} level={3} corners={4} layer='primary' className="inputWithinFrame">
 									<input id="description" className="input" type="text" placeholder="Description" onChange={this.onChangeInput} />
 								</Frame>
 							</div>
 
 							<div>
-								<Frame animate={true} level={3} corners={4} layer='primary'>
-									<Dropzone onDrop={acceptedFiles => {
-										this.uploadImage(acceptedFiles)
-									}}>
-										{({ getRootProps, getInputProps }) => (
-											<section>
-												<div style={{ fontSize: 'small', padding: '5rem' }} {...getRootProps()}>
-													<input {...getInputProps()} />
-													<p>Drag 'n' drop some files here, or click to select files</p>
-												</div>
-											</section>
-										)}
-									</Dropzone>
+								<Frame animate={true} level={3} corners={4} layer='primary' className="inputWithinFrame">
+									{/* {Utilities.isIoPayMobile() ? (
+										<input id="fileToUpload" className="input" style={{ width: '21rem' }} type="file" name="fileToUpload" accept="image/*" onChange={this.onChangeInput} />
+									) : (
+											<Dropzone onDrop={acceptedFiles => {
+												this.uploadImage(acceptedFiles)
+											}}>
+												{({ getRootProps, getInputProps }) => (
+													<section>
+														<div style={{ fontSize: 'small', padding: '5rem' }} {...getRootProps()}>
+															<input {...getInputProps()} />
+															<p>Drag 'n' drop some files here, or click to select files</p>
+														</div>
+													</section>
+												)}
+											</Dropzone>
+										)} */}
+										<input id="fileToUpload" className="input" style={{ width: '21rem' }} type="file" name="fileToUpload" accept="image/*" onChange={this.onChangeInput} />
 								</Frame>
 							</div>
 
 							{/* <div className="label">IPFS Path: {this.state.ipfsPath}</div> */}
 
 							<div className="full">
-								<Frame animate={true} level={3} corners={4} layer='primary'>
-									<p className="output" style={{ overflow: 'scroll' }}>{this.makeJson()}</p>
+								<Frame animate={true} level={3} corners={4} layer='primary' className="inputWithinFrame">
+									<p className="output" style={{ overflow: 'scroll', maxWidth: '20rem' }}>{this.makeJson()}</p>
 								</Frame>
 							</div>
 
 							<div className="full">
-								<Frame animate={true} level={1} corners={1} layer='primary'>
+								<Frame animate={true} level={1} corners={1} layer='primary' className="inputWithinFrame">
 									<input
 										ref={node => { this.theAddressInput = node }}
 										className="input"
@@ -272,7 +280,7 @@ class ERC721Done extends React.Component {
 									layer='success'>Mint</Button>
 							</div>
 
-							<Line animate layer='success' />
+							<Line animate layer='success' className="invisibleLine" />
 						</div>
 
 						<div style={{ marginTop: '2rem' }}>
@@ -289,6 +297,8 @@ class ERC721Done extends React.Component {
 						</div>
 					</div>
 				)}
+
+				<p>&nbsp;</p>
 			</div>
 		)
 	}

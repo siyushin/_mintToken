@@ -1,22 +1,33 @@
 import Antenna from 'iotex-antenna'
 import { validateAddress } from 'iotex-antenna/lib/account/utils'
-import { WsSignerPlugin } from 'iotex-antenna/lib/plugin/ws';
+import { WsSignerPlugin } from 'iotex-antenna/lib/plugin/ws'
 import AbiConfig from './AbiConfig'
-import Config from './Config';
+import Config from './Config'
+import { JsBridgeSignerMobile } from './js-plugin'
+import Utilities from './Utilities'
 
 const AntennaManager = {
 	antenna: null,
 	countRetry: 0,
 	limitRetry: 5,
+	jsSigner: null,
 
 	init: function () {
+		this.jsSigner = Utilities.isIoPayMobile() ? new JsBridgeSignerMobile() : new WsSignerPlugin()
 		this.antenna = new Antenna(Config.rpcURL, {
-			signer: new WsSignerPlugin()
+			signer: this.jsSigner
 		});
 	},
 
 	getAccounts: async function () {
-		const accounts = await this.antenna.iotx.accounts;
+		let accounts = ''
+		if (Utilities.isIoPayMobile()) {
+			accounts = await this.jsSigner.getIoAddressFromIoPay();
+			this.antenna.iotx.accounts[0] = await this.jsSigner.getAccount(accounts);
+		} else {
+			accounts = await this.antenna.iotx.accounts;
+		}
+
 		if (accounts?.length === 0) {
 			setTimeout(() => {
 				this.getAccounts()

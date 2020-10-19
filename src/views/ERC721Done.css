@@ -1,9 +1,9 @@
 .buttons {
-	display        : flex;
-	flex-direction : row;
+	display: flex;
+	flex-direction: row;
 	justify-content: flex-end;
-	column-gap     : 1rem;
-	width          : 100%;
+	column-gap: 1rem;
+	width: 100%;
 }
 
 .normalButton {
@@ -16,18 +16,49 @@
 
 .output {
 	font-family: 'Courier New', Courier, monospace;
-	padding    : 1rem;
-	text-align : left;
-	font-size  : small;
+	padding: 1rem;
+	text-align: left;
+	font-size: small;
 }
 
 .block {
-	display       : flex;
+	display: flex;
 	flex-direction: column;
-	row-gap       : 1rem;
-	align-items   : flex-start;
+	row-gap: 1rem;
+	align-items: flex-start;
 }
 
 .label {
 	font-size: small;
+}
+
+.invisibleLine {
+	visibility: visible;
+}
+
+@media screen and (max-width: 600px) {
+	.block {
+		display: flex;
+		flex-direction: column;
+		row-gap: 1rem;
+		justify-content: center;
+	}
+	.full {
+		width: 21rem;
+	}
+	.buttons {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		column-gap: 1rem;
+		width: 100%;
+	}
+	.invisibleLine {
+		visibility: hidden;
+	}
+	.normalButton {
+		min-width: 7rem;
+		margin-left: 0.5rem;
+		margin-right: 0.5rem;
+	}
 }

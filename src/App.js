@@ -10,6 +10,7 @@ import HomePage from './views/HomePage';
 import ERC721Panel from './views/ERC721Panel';
 import ERC721Done from './views/ERC721Done';
 import LoadingBar from './views/LoadingBar';
+import Utilities from './Utilities';
 
 function App() {
   const onClickERC20 = () => {
@@ -26,12 +27,6 @@ function App() {
       jumpTo721={jumpTo721}
       onClickERC20={onClickERC20}
       onClickERC721={onClickERC721} />)
-  }
-
-  const generateLoading = () => {
-    return (<LoadingBar onCancel={() => {
-      setView(generateHomePage)
-    }} />)
   }
 
   const jumpTo = deployedContract => {
@@ -98,11 +93,17 @@ function App() {
     setStatus('Connecting wallet...')
     AntennaManager.init()
 
-    setTimeout(() => {
-      checkWallet(false)
-      // setView(<Done tokenName="tokenName" deployedAddress="io156w885vnls6f7zt7kad40z3ln75uum4ltt92tt" />)
-      // setView(<ERC721Done tokenName="AAAAAAAA" deployedAddress="io1vysscvelmy2e5kl44lzs9ntn02xgnul9v5lp7s" />)
-    }, 5000);
+    if (Utilities.isIoPayMobile()) {
+      AntennaManager.getAccounts().then(res => {
+        setView(generateHomePage)
+        // setView(<Done tokenName="tokenName" deployedAddress="io156w885vnls6f7zt7kad40z3ln75uum4ltt92tt" />)
+        // setView(<ERC721Done tokenName="AAAAAAAA" deployedAddress="io1vysscvelmy2e5kl44lzs9ntn02xgnul9v5lp7s" />)
+      })
+    } else {
+      setTimeout(() => {
+        checkWallet(false)
+      }, 5000);
+    }
   }, [])
 
   return (

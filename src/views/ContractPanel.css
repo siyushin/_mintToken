@@ -1,13 +1,6 @@
-.h2 {
-	font-size    : 1rem;
-	margin-bottom: 2rem;
-}
-
 .tableContainer {
-	width          : 100%;
-	display        : flex;
-	justify-content: center;
-	align-items    : center;
+	width: 100%;
+	display: table;
 }
 
 .table {
@@ -15,28 +8,63 @@
 }
 
 .tr {
+	/* display: table-row;˝ */
 	padding-bottom: 1rem;
-	padding-left  : 1rem;
+	padding-left: 1rem;
+}
+
+.tdLeft {
+	display: table-cell;
+	width: 40%;
+}
+
+.tdRight {
+	display: table-cell;
+	padding-left: 1rem;
 }
 
 .input {
-	font-size       : 1rem;
-	padding         : 0.5rem;
+	font-size: 1rem;
+	padding: 0.5rem;
 	background-color: transparent;
-	border          : none;
-	color           : #efefef;
-	width           : 100%;
+	border: none;
+	color: #efefef;
+	width: 100%;
 }
 
 .description {
-	font-size : 0.8rem;
+	font-size: 0.8rem;
 	text-align: left;
 }
 
 .buttonPanel {
-	margin-top     : 2rem;
-	display        : flex;
+	margin-top: 2rem;
+	display: flex;
 	justify-content: flex-end;
-	padding-right  : 10%;
-	column-gap     : 1rem;
+	padding-right: 10%;
+	column-gap: 1rem;
+}
+
+@media screen and (max-width: 600px) {
+	.tdLeft {
+		display: block;
+		width: 90%;
+	}
+	.tdRight {
+		display: block;
+		width: 90%;
+		margin-top: 0.5rem;
+	}
+	.description {
+		font-size: 0.5rem;
+		text-align: left;
+		margin-bottom: 1rem;
+	}
+	.buttonPanel {
+		margin-top: 2rem;
+		display: flex;
+		justify-content: center;
+		padding-right: 0;
+		column-gap: 1rem;
+	}
 }

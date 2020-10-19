@@ -49,38 +49,47 @@ class ERC721Panel extends React.Component {
 		return (<div>
 			<Words animate className="h2">Welcome to Token Creation Wizard</Words>
 			<div className="tableContainer">
-				<table className="table">
-					<tr>
-						<td width="40%" className="tr">
+				<div className="table">
+					<tr className="tr">
+						<td className="tdLeft">
 							<Frame animate={true} level={3} corners={4} layer='primary'>
 								<input id="name" className="input" type="text" placeholder="Token Name" onChange={this.onChangeInput} />
 							</Frame>
 						</td>
-						<td className="tr">
+
+						<td className="tdRight">
 							<Words animate className="description">The name of the token. 3-25 symbols. Alphanumerical characters, space, and hyphen are accepted.</Words>
 						</td>
 					</tr>
-					<tr>
-						<td width="40%" className="tr">
+
+					<tr className="tr">
+						<td className="tdLeft">
 							<Frame animate={true} level={3} corners={4} layer='primary'>
 								<input id="symbol" className="input" type="text" placeholder="Token Symbol" onChange={this.onChangeInput} />
 							</Frame>
 						</td>
-						<td className="tr">
+
+						<td className="tdRight">
 							<Words animate className="description">3-4 characters (example ETH, BTC, BAT, etc.). No spaces. Only alphanumerical characters.</Words>
 						</td>
 					</tr>
-				</table>
+				</div>
 			</div>
+
 			<div className="buttonPanel">
 				<Button
 					onClick={this.props.onCancel}
+					className="normalButton"
 					animate layer='success'>Cancel</Button>
+
 				<Button
 					disabled={!this.checkInput()}
 					onClick={this.onSubmit}
+					className="normalButton"
 					animate layer='success'>Submit</Button>
 			</div>
+
+			<p>&nbsp;</p>
 		</div>)
 	}
 }

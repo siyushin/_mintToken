@@ -11,6 +11,10 @@ const Utilities = {
 			data = [value]
 		}
 		window.localStorage.setItem(key, JSON.stringify(data))
+	},
+
+	isIoPayMobile: function () {
+		return navigator.userAgent && (navigator.userAgent.includes("IoPayAndroid") || navigator.userAgent.includes("IoPayiOs"));
 	}
 }
 

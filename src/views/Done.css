@@ -1,14 +1,14 @@
 .h2 {
-	font-size    : 2rem;
+	font-size: 1.2rem;
 	margin-bottom: 1rem;
 }
 
 .tableContainer {
-	width          : 100%;
-	display        : flex;
-	flex-direction : column;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
 	justify-content: center;
-	align-items    : center;
+	align-items: center;
 }
 
 .label {
@@ -16,19 +16,45 @@
 }
 
 .h3 {
-	margin-top   : 3rem;
+	margin-top: 3rem;
 	margin-bottom: 1rem;
 }
 
+.xrc21TokenLabel {
+	margin-bottom: 1rem;
+	width: 25rem
+}
+
 .transferPanel {
-	display       : flex;
+	display: flex;
 	flex-direction: column;
-	row-gap       : 1rem;
-	padding       : 2rem;
-	width         : 25rem;
+	row-gap: 1rem;
+	padding: 2rem;
+	width: 25rem;
 }
 
 .smallButtonPanel {
-	display        : flex;
+	display: flex;
 	justify-content: flex-end;
+}
+
+.inputWithinFrame {
+	margin-bottom: 0;
+}
+
+@media screen and (max-width: 600px) {
+	.transferPanel {
+		display: flex;
+		flex-direction: column;
+		row-gap: 1rem;
+		padding: 2rem;
+		width: 21rem;
+	}
+	.xrc21TokenLabel {
+		margin-bottom: 1rem;
+		width: 21rem
+	}
+	.inputWithinFrame {
+		margin-bottom: 1rem;
+	}
 }

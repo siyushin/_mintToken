@@ -122,7 +122,7 @@ class Done extends React.Component {
 
 			{!this.state.address && (
 				<div className="status">
-					<span>Checking: {this.props.hxid}&nbsp;&nbsp;</span>
+					<span>Checking: {Utilities.isIoPayMobile() ? this.props.hxid.substr(0, 10) + '...' : this.props.hxid}&nbsp;&nbsp;</span>
 					<span>
 						{this.state.isChecking ? (
 							<Loading animate small />
@@ -147,7 +147,7 @@ class Done extends React.Component {
 						</Frame>
 					</div>
 
-					<div style={{ marginBottom: '1rem', width: '25rem' }}>
+					<div className="xrc21TokenLabel">
 						<div className="h3">
 							<Words animate className="description">{'The total supply of your ' + this.props.tokenName + ' tokens is'}</Words>
 						</div>
@@ -163,7 +163,7 @@ class Done extends React.Component {
 							<div className="transferPanel">
 								<Words animate className="description">Transfer Token</Words>
 
-								<Frame animate={true} level={3} corners={1} layer='primary'>
+								<Frame animate={true} level={3} corners={1} layer='primary' className="inputWithinFrame">
 									<input
 										ref={node => { this.theNumberInput = node }}
 										className="input"
@@ -175,7 +175,7 @@ class Done extends React.Component {
 										placeholder={'0 ' + this.props.tokenName} />
 								</Frame>
 
-								<Frame animate={true} level={3} corners={1} layer='primary'>
+								<Frame animate={true} level={3} corners={1} layer='primary' className="inputWithinFrame">
 									<input
 										ref={node => { this.theAddressInput = node }}
 										className="input"
@@ -195,6 +195,8 @@ class Done extends React.Component {
 					)}
 				</div>
 			)}
+
+			<p>&nbsp;</p>
 		</div >)
 	}
 }

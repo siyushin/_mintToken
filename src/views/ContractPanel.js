@@ -78,29 +78,29 @@ class ContractPanel extends React.Component {
 		return (<div>
 			<Words animate className="h2">Welcome to Token Creation Wizard</Words>
 			<div className="tableContainer">
-				<table className="table">
-					<tr>
-						<td width="40%" className="tr">
+				<div className="table">
+					<div className="tr">
+						<div className="tdLeft">
 							<Frame animate={true} level={3} corners={4} layer='primary'>
 								<input id="name" className="input" type="text" placeholder="Token Name" onChange={this.onChangeInput} />
 							</Frame>
-						</td>
-						<td className="tr">
+						</div>
+						<div className="tdRight">
 							<Words animate className="description">The name of the token. 3-25 symbols. Alphanumerical characters, space, and hyphen are accepted.</Words>
-						</td>
-					</tr>
-					<tr>
-						<td width="40%" className="tr">
+						</div>
+					</div>
+					<div className="tr">
+						<div className="tdLeft">
 							<Frame animate={true} level={3} corners={4} layer='primary'>
 								<input id="symbol" className="input" type="text" placeholder="Token Symbol" onChange={this.onChangeInput} />
 							</Frame>
-						</td>
-						<td className="tr">
+						</div>
+						<div className="tdRight">
 							<Words animate className="description">3-4 characters (example ETH, BTC, BAT, etc.). No spaces. Only alphanumerical characters.</Words>
-						</td>
-					</tr>
-					<tr>
-						<td width="40%" className="tr">
+						</div>
+					</div>
+					<div className="tr">
+						<div className="tdLeft">
 							<Frame animate={true} level={3} corners={4} layer='primary'>
 								<input
 									id="decimals"
@@ -112,13 +112,13 @@ class ContractPanel extends React.Component {
 									step={1}
 									placeholder="Decimals" />
 							</Frame>
-						</td>
-						<td className="tr">
+						</div>
+						<div className="tdRight">
 							<Words animate className="description">Defines the number of decimals for the token. 0-18 numerals are accepted. 18 is common practice.</Words>
-						</td>
-					</tr>
-					<tr>
-						<td width="40%" className="tr">
+						</div>
+					</div>
+					<div className="tr">
+						<div className="tdLeft">
 							<Frame animate={true} level={3} corners={4} layer='primary'>
 								<input
 									id="supply"
@@ -130,22 +130,28 @@ class ContractPanel extends React.Component {
 									step={1}
 									placeholder="Total Supply" />
 							</Frame>
-						</td>
-						<td className="tr">
+						</div>
+						<div className="tdRight">
 							<Words animate className="description">Total amount of tokens to be generated. Minimum value is 1, and maximum 1000000000000000.</Words>
-						</td>
-					</tr>
-				</table>
+						</div>
+					</div>
+				</div>
 			</div>
+
 			<div className="buttonPanel">
 				<Button
 					onClick={this.props.onCancel}
+					className="normalButton"
 					animate layer='success'>Cancel</Button>
+
 				<Button
 					disabled={!this.checkInput()}
+					className="normalButton"
 					onClick={this.onSubmit}
 					animate layer='success'>Submit</Button>
 			</div>
+
+			<p>&nbsp;</p>
 		</div>)
 	}
 }
