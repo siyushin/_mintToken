@@ -1,5 +1,6 @@
 import Antenna from 'iotex-antenna'
 import { validateAddress } from 'iotex-antenna/lib/account/utils'
+import { Contract } from 'iotex-antenna/lib/contract/contract'
 import { WsSignerPlugin } from 'iotex-antenna/lib/plugin/ws'
 import AbiConfig from './AbiConfig'
 import Config from './Config'
@@ -44,7 +45,7 @@ const AntennaManager = {
 
 	deployContract: function (name, symbol, decimals, supply, callback) {
 		this.antenna.iotx.deployContract({
-			from: this.getAccounts().address,
+			from: this.antenna.iotx.accounts[0].address,
 			amount: "0",
 			abi: AbiConfig.abi,
 			data: Buffer(AbiConfig.bytecode, 'hex'),
@@ -53,13 +54,14 @@ const AntennaManager = {
 		}, supply, name, symbol, decimals).then(hxid => {
 			return callback(hxid)
 		}).catch(err => {
+			alert(JSON.stringify(err))
 			console.error(err)
 		})
 	},
 
 	deployERC721Contract: function (name, supply, callback) {
 		this.antenna.iotx.deployContract({
-			from: this.getAccounts().address,
+			from: this.antenna.iotx.accounts[0].address,
 			amount: "0",
 			abi: AbiConfig.abi721,
 			data: Buffer(AbiConfig.bytecode721, 'hex'),
@@ -68,6 +70,7 @@ const AntennaManager = {
 		}, supply, name).then(hxid => {
 			return callback(hxid)
 		}).catch(err => {
+			alert(JSON.stringify(err))
 			console.error(err)
 		})
 	},
