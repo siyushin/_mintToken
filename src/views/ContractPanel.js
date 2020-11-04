@@ -20,7 +20,7 @@ class ContractPanel extends React.Component {
 	}
 
 	checkInput() {
-		return this.state.name != '' && this.state.symbol != '' && this.state.decimals != '' && this.state.supply != ''
+		return this.state.name !== '' && this.state.symbol !== '' && this.state.decimals !== '' && this.state.supply !== ''
 	}
 
 	onChangeInput(event) {

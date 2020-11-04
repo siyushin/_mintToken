@@ -5,10 +5,10 @@ import Loading from 'arwes/lib/Loading'
 import Link from 'arwes/lib/Link'
 import Line from 'arwes/lib/Line'
 import Button from 'arwes/lib/Button'
-import Project from 'arwes/lib/Project'
 import './Done.css'
 import AntennaManager from '../AntennaManager';
 import Utilities from '../Utilities';
+import BigNumber from 'bignumber.js';
 
 class Done extends React.Component {
 	constructor(props) {
@@ -16,9 +16,9 @@ class Done extends React.Component {
 
 		this.theNumberInput = null
 		this.theAddressInput = null
-
+		this.decimals = 0
 		this.state = {
-			balance: 0,
+			balance: null,
 			isChecking: true,
 			address: props.deployedAddress,
 			toTransfer: 0,
@@ -62,9 +62,13 @@ class Done extends React.Component {
 	}
 
 	getBalance(address) {
-		AntennaManager.getBalanceOf(address, res => {
-			this.setState({
-				balance: res
+		AntennaManager.getDecimals(address, dec => {
+			this.decimals = parseInt(dec)
+
+			AntennaManager.getBalanceOf(address, res => {
+				this.setState({
+					balance: res
+				})
 			})
 		})
 		return 0
@@ -78,7 +82,7 @@ class Done extends React.Component {
 	}
 
 	onChangeInputCount(event) {
-		let tempNumber = parseInt(event.target.value)
+		let tempNumber = parseFloat(event.target.value)
 		if (tempNumber) {
 			this.setState({
 				toTransfer: tempNumber
@@ -93,26 +97,29 @@ class Done extends React.Component {
 	}
 
 	isDisable() {
-		return this.state.toTransfer > 0 && this.state.toAddress != ''
+		return this.state.toTransfer > 0 && this.state.toAddress !== ''
 	}
 
 	onTransfer() {
-		console.log(this.state.toTransfer, this.state.toAddress)
-
 		if (!AntennaManager.isValidateAddress(this.state.toAddress)) {
 			return window.alert('Invalid address.')
 		} else if (!this.state.toTransfer > 0) {
 			return window.alert('The transfer amount must be mort than 0.')
 		} else {
-			AntennaManager.transfer(this.state.address, this.state.toAddress, this.state.toTransfer, res => {
-				this.theNumberInput.value = 0
-				this.theAddressInput.value = ''
-				this.setState({
-					balance: this.state.balance - this.state.toTransfer,
-					toAddress: '',
-					toTransfer: 0
+			let amount = new BigNumber(this.state.toTransfer).multipliedBy(Math.pow(10, this.decimals))
+			AntennaManager.transfer(
+				this.state.address,
+				this.state.toAddress,
+				amount.toString(),
+				res => {
+					this.theNumberInput.value = 0
+					this.theAddressInput.value = ''
+					this.setState({
+						balance: this.state.balance - amount,
+						toAddress: '',
+						toTransfer: 0
+					})
 				})
-			})
 		}
 	}
 
@@ -153,7 +160,7 @@ class Done extends React.Component {
 						</div>
 						<div>
 							<Frame animate={true} level={3} corners={4} layer='primary'>
-								<Words animate className="label">{String(this.state.balance)}</Words>
+								<Words animate className="label">{this.state.balance ? new BigNumber(this.state.balance).dividedBy(new BigNumber(Math.pow(10, this.decimals))).toString(10) : ""}</Words>
 							</Frame>
 						</div>
 					</div>

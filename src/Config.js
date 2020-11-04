@@ -4,7 +4,7 @@ const Config = {
 	ipfsURL: "ipfs.minttoken.io",
 	// ipfsURL: "localhost",
 	ipfsPort: 5001,
-	ipfsScheme: "http"
+	ipfsScheme: "https"
 }
 
 export default Config

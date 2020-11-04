@@ -1,6 +1,6 @@
+import BigNumber from 'bignumber.js'
 import Antenna from 'iotex-antenna'
 import { validateAddress } from 'iotex-antenna/lib/account/utils'
-import { Contract } from 'iotex-antenna/lib/contract/contract'
 import { WsSignerPlugin } from 'iotex-antenna/lib/plugin/ws'
 import AbiConfig from './AbiConfig'
 import Config from './Config'
@@ -14,6 +14,7 @@ const AntennaManager = {
 	jsSigner: null,
 
 	init: function () {
+		BigNumber.config({ DECIMAL_PLACES: 12 })
 		this.jsSigner = Utilities.isIoPayMobile() ? new JsBridgeSignerMobile() : new WsSignerPlugin()
 		this.antenna = new Antenna(Config.rpcURL, {
 			signer: this.jsSigner
@@ -44,14 +45,20 @@ const AntennaManager = {
 	},
 
 	deployContract: function (name, symbol, decimals, supply, callback) {
-		this.antenna.iotx.deployContract({
-			from: this.antenna.iotx.accounts[0].address,
-			amount: "0",
-			abi: AbiConfig.abi,
-			data: Buffer(AbiConfig.bytecode, 'hex'),
-			gasLimit: "4000000",
-			gasPrice: "1000000000000",
-		}, supply, name, symbol, decimals).then(hxid => {
+		this.antenna.iotx.deployContract(
+			{
+				from: this.antenna.iotx.accounts[0].address,
+				amount: "0",
+				abi: AbiConfig.abi,
+				data: Buffer(AbiConfig.bytecode, 'hex'),
+				gasLimit: "4000000",
+				gasPrice: "1000000000000",
+			},
+			new BigNumber(supply).multipliedBy(Math.pow(10, decimals)).toString(),
+			name,
+			symbol,
+			decimals
+		).then(hxid => {
 			return callback(hxid)
 		}).catch(err => {
 			alert(JSON.stringify(err))
@@ -91,6 +98,20 @@ const AntennaManager = {
 			}).catch(err => {
 				console.error(err)
 			})
+	},
+
+	getDecimals: function (contractAddress, callback) {
+		this.antenna.iotx.executeContract({
+			contractAddress: contractAddress,
+			amount: "0",
+			abi: AbiConfig.abi,
+			method: "decimals",
+			gasLimit: "1000000",
+			gasPrice: "1000000000000",
+			from: this.antenna.iotx.accounts[0].address
+		}).then(res => {
+			callback(parseInt(res))
+		})
 	},
 
 	getBalanceOf: function (contractAddress, callback) {

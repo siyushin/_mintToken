@@ -155,6 +155,7 @@ class ERC721Done extends React.Component {
 
 			case 'fileToUpload':
 				this.uploadImage(event.target.files)
+				break
 
 			default:
 				break
@@ -227,7 +228,7 @@ class ERC721Done extends React.Component {
 
 							<div>
 								<Frame animate={true} level={3} corners={4} layer='primary' className="inputWithinFrame">
-									{/* {Utilities.isIoPayMobile() ? (
+									{Utilities.isIoPayMobile() ? (
 										<input id="fileToUpload" className="input" style={{ width: '21rem' }} type="file" name="fileToUpload" accept="image/*" onChange={this.onChangeInput} />
 									) : (
 											<Dropzone onDrop={acceptedFiles => {
@@ -242,8 +243,7 @@ class ERC721Done extends React.Component {
 													</section>
 												)}
 											</Dropzone>
-										)} */}
-										<input id="fileToUpload" className="input" style={{ width: '21rem' }} type="file" name="fileToUpload" accept="image/*" onChange={this.onChangeInput} />
+										)}
 								</Frame>
 							</div>
 
