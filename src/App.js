@@ -94,6 +94,10 @@ function App() {
 
     if (Utilities.isIoPayMobile()) {
       AntennaManager.getAccounts().then(res => {
+        if (res) {
+          setStatus('ioPay connected: ', res.address)
+        }
+
         setView(generateHomePage)
         // setView(<Done tokenName="tokenName" deployedAddress="io156w885vnls6f7zt7kad40z3ln75uum4ltt92tt" />)
         // setView(<ERC721Done tokenName="AAAAAAAA" deployedAddress="io1vysscvelmy2e5kl44lzs9ntn02xgnul9v5lp7s" />)
