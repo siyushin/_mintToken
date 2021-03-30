@@ -1,5 +1,8 @@
 # MintToken
 
+forked from https://github.com/siyushin/_mintToken
+
+
 `MintToken` is an innovative and open-source dapp built on top of [IoTeX](https://iotex.io) blockchain for the issuance of new assets.
 
 ## Use
