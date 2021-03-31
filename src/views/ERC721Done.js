@@ -251,7 +251,7 @@ class ERC721Done extends React.Component {
 
 							<div className="full">
 								<Frame animate={true} level={3} corners={4} layer='primary' className="inputWithinFrame">
-									<p className="output" style={{ overflow: 'scroll', maxWidth: '20rem' }}>{this.makeJson()}</p>
+									<p className="output" style={{ overflow: 'auto' }}>{this.makeJson()}</p>
 								</Frame>
 							</div>
 
