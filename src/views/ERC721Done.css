@@ -36,6 +36,11 @@
 	visibility: visible;
 }
 
+.NFTListItem:hover {
+	background-color: #26dafd;
+	color: black;
+}
+
 @media screen and (max-width: 600px) {
 	.block {
 		display: flex;

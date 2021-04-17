@@ -145,6 +145,20 @@ const AntennaManager = {
 		})
 	},
 
+	transferNFT: function (contractAddress, toAddress, tokenID, callback) {
+		this.antenna.iotx.executeContract({
+			contractAddress: contractAddress,
+			amount: "0",
+			abi: AbiConfig.abi721,
+			method: "transferFrom",
+			gasLimit: "1000000",
+			gasPrice: "1000000000000",
+			from: this.antenna.iotx.accounts[0].address
+		}, this.antenna.iotx.accounts[0].address, toAddress, tokenID).then(res => {
+			return callback(res)
+		})
+	},
+
 	get721BalanceOf: function (contractAddress, callback) {
 		this.antenna.iotx.executeContract(
 			{
@@ -160,6 +174,18 @@ const AntennaManager = {
 		).then(res => {
 			callback(parseInt(res))
 		})
+	},
+
+	getNFTByIndex: async function (contractAddress, index) {
+		return String(await this.antenna.iotx.executeContract({
+			contractAddress: contractAddress,
+			amount: "0",
+			abi: AbiConfig.abi721,
+			method: "tokenOfOwnerByIndex",
+			gasLimit: "1000000",
+			gasPrice: "1000000000000",
+			from: this.antenna.iotx.accounts[0].address
+		}, this.antenna.iotx.accounts[0].address, index));
 	},
 
 	getActions: function (hxid, callback) {

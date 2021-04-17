@@ -11,6 +11,30 @@ import ipfs from 'ipfs-http-client'
 import AntennaManager from '../AntennaManager';
 import Config from '../Config';
 import Utilities from '../Utilities';
+import debounce from "lodash.debounce"
+import Modal from 'react-modal';
+
+const stylesOfModal = {
+	overlay: {
+		position: 'fixed',
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0,
+		backgroundColor: 'rgba(0, 0, 0, 0.5)',
+	},
+	content: {
+		top: '50%',
+		left: '50%',
+		right: 'auto',
+		bottom: 'auto',
+		marginRight: '-50%',
+		transform: 'translate(-50%, -50%)',
+		padding: "0.5rem",
+		backgroundColor: "black",
+		border: "none"
+	}
+};
 
 class ERC721Done extends React.Component {
 	constructor(props) {
@@ -26,13 +50,19 @@ class ERC721Done extends React.Component {
 			description: '',
 			isChecking: true,
 			address: props.deployedAddress,
-			toAddress: ''
+			toAddress: '',
+			toTransfer: '',
+			NFTs: [],
+			isTransferModalShow: false
 		}
 
 		this.onSubmit = this.onSubmit.bind(this)
 		this.onChangeInput = this.onChangeInput.bind(this)
 		this.onClickRetry = this.onClickRetry.bind(this)
-		this.onChangeInputAddress = this.onChangeInputAddress.bind(this)
+		this.onChangeInputAddress = this.onChangeInputAddress.bind(this);
+		this.onClickTransferLink = this.onClickTransferLink.bind(this)
+		this.onClickCloseTransferModal = this.onClickCloseTransferModal.bind(this);
+		this.onTransfer = this.onTransfer.bind(this);
 	}
 
 	componentDidMount() {
@@ -91,31 +121,25 @@ class ERC721Done extends React.Component {
 	}
 
 	onSubmit() {
-		let tempAddress = null
-		if (!this.state.toAddress || (this.state.toAddress && AntennaManager.isValidateAddress(this.state.toAddress))) {
-			tempAddress = this.state.toAddress
-			const buf = Buffer(JSON.stringify(this.theJson), 'utf-8')
-			this.theIPFS.add(buf).then(file => {
-				if (file && file.path) {
-					AntennaManager.mint721(this.state.address, file.path, tempAddress, txid => {
-						if (!tempAddress) {
-							this.getReceiptOfMint(txid)
-							this.setState({
-								balance: -1
-							})
-						} else {
-							window.alert('the transaction (' + txid + ') is being confirmed...')
-							this.theAddressInput.value = ''
-							this.setState({
-								toAddress: ''
-							})
-						}
-					})
-				}
+		const buf = Buffer(JSON.stringify(this.theJson), 'utf-8')
+		this.theIPFS.add(buf).then(file => {
+			if (file && file.path) {
+				AntennaManager.mint721(this.state.address, file.path, null, txid => {
+					this.getReceiptOfMint(txid)
+				})
+			}
+		});
+	}
+
+	onTransfer() {
+		AntennaManager.transferNFT(this.state.address, this.state.toAddress, this.state.toTransfer, txid => {
+			this.getReceiptOfMint(txid)
+			this.setState({
+				toTransfer: "",
+				toAddress: "",
+				isTransferModalShow: false
 			})
-		} else {
-			return window.alert('Invalid address.')
-		}
+		})
 	}
 
 	getReceiptOfMint(hxid) {
@@ -133,10 +157,26 @@ class ERC721Done extends React.Component {
 	getBalance() {
 		AntennaManager.get721BalanceOf(this.state.address, res => {
 			this.setState({
-				balance: res
+				balance: res,
+				NFTs: []
 			})
+
+			setTimeout(() => {
+				this.getNFTs()
+			}, 1000);
 		})
 		return 0
+	}
+
+	async getNFTs() {
+		let tokenID;
+		for (var i = 0; i < this.state.balance; i++) {
+			tokenID = await AntennaManager.getNFTByIndex(this.state.address, i)
+			this.state.NFTs.push(tokenID)
+			this.setState({
+				NFTs: [...this.state.NFTs]
+			})
+		}
 	}
 
 	onChangeInput(event) {
@@ -172,10 +212,30 @@ class ERC721Done extends React.Component {
 		return JSON.stringify(this.theJson)
 	}
 
-	onChangeInputAddress(event) {
+	onChangeInputAddress() {
+		if (AntennaManager.isValidateAddress(this.theAddressInput.value)) {
+			this.setState({
+				toAddress: this.theAddressInput.value
+			})
+		} else {
+			this.setState({
+				toAddress: ""
+			})
+		}
+	}
+
+	onClickTransferLink(event) {
 		this.setState({
-			toAddress: event.target.value
-		})
+			toTransfer: event.target.dataset.tokenid,
+			isTransferModalShow: true
+		});
+	}
+
+	onClickCloseTransferModal() {
+		this.setState({
+			toTransfer: "",
+			isTransferModalShow: false
+		});
 	}
 
 	render() {
@@ -190,8 +250,8 @@ class ERC721Done extends React.Component {
 							{this.state.isChecking ? (
 								<Loading animate small />
 							) : (
-									<Link onClick={this.onClickRetry}>Retry</Link>
-								)}
+								<Link onClick={this.onClickRetry}>Retry</Link>
+							)}
 						</span>
 					</div>
 				)}
@@ -231,19 +291,19 @@ class ERC721Done extends React.Component {
 									{Utilities.isIoPayMobile() ? (
 										<input id="fileToUpload" className="input" style={{ width: '21rem' }} type="file" name="fileToUpload" accept="image/*" onChange={this.onChangeInput} />
 									) : (
-											<Dropzone onDrop={acceptedFiles => {
-												this.uploadImage(acceptedFiles)
-											}}>
-												{({ getRootProps, getInputProps }) => (
-													<section>
-														<div style={{ fontSize: 'small', padding: '5rem' }} {...getRootProps()}>
-															<input {...getInputProps()} />
-															<p>Drag 'n' drop some files here, or click to select files</p>
-														</div>
-													</section>
-												)}
-											</Dropzone>
-										)}
+										<Dropzone onDrop={acceptedFiles => {
+											this.uploadImage(acceptedFiles)
+										}}>
+											{({ getRootProps, getInputProps }) => (
+												<section>
+													<div style={{ fontSize: 'small', padding: '5rem' }} {...getRootProps()}>
+														<input {...getInputProps()} />
+														<p>Drag 'n' drop some files here, or click to select files</p>
+													</div>
+												</section>
+											)}
+										</Dropzone>
+									)}
 								</Frame>
 							</div>
 
@@ -252,17 +312,6 @@ class ERC721Done extends React.Component {
 							<div className="full">
 								<Frame animate={true} level={3} corners={4} layer='primary' className="inputWithinFrame">
 									<p className="output" style={{ overflow: 'auto' }}>{this.makeJson()}</p>
-								</Frame>
-							</div>
-
-							<div className="full">
-								<Frame animate={true} level={1} corners={1} layer='primary' className="inputWithinFrame">
-									<input
-										ref={node => { this.theAddressInput = node }}
-										className="input"
-										type="text"
-										onChange={this.onChangeInputAddress}
-										placeholder="Transfer To (Optional)" />
 								</Frame>
 							</div>
 
@@ -283,22 +332,65 @@ class ERC721Done extends React.Component {
 							<Line animate layer='success' className="invisibleLine" />
 						</div>
 
-						<div style={{ marginTop: '2rem' }}>
-							<div className="label">YOUR NFT ASSETS</div>
-							<Frame animate={true} level={3} corners={4} layer='primary'>
-								{this.state.balance === -1 ? (
-									<div className="label">
-										<Loading animate small />
-									</div>
-								) : (
-										<div className="label">{this.state.balance}</div>
-									)}
-							</Frame>
+						<div className="full" style={{ marginTop: '2rem' }}>
+							<div className="label">YOUR NFT ASSET(S): {this.state.balance}</div>
+
+							{this.state.balance > 0 && this.state.NFTs.length > 0 && (<>
+								<Frame animate={true} level={3} corners={4} layer='primary'>
+									<table width="100%" border="0" style={{
+										fontSize: "small",
+										margin: "0.5rem",
+										borderCollapse: "collapse"
+									}}>
+										{this.state.NFTs.map(item => (
+											<tr className="NFTListItem">
+												<td>Token ID: {item}</td>
+												<td><Link data-tokenid={item} onClick={this.onClickTransferLink}>Transfer</Link></td>
+											</tr>
+										))}
+									</table>
+								</Frame>
+							</>)}
 						</div>
 					</div>
 				)}
 
 				<p>&nbsp;</p>
+				<Modal
+					isOpen={this.state.isTransferModalShow}
+					onRequestClose={this.onClickCloseTransferModal}
+					style={stylesOfModal}>
+					<div className="full">
+						<Frame animate={true} level={3} corners={4} layer='primary'>
+							<div className="block" style={{ padding: "1rem" }}>
+								<div style={{ width: "100%" }}>
+									<Frame animate={true} level={3} corners={1} layer='primary' className="inputWithinFrame">
+										<input
+											ref={node => { this.theAddressInput = node }}
+											className="input"
+											type="text"
+											onChange={debounce(this.onChangeInputAddress, 1500)}
+											placeholder="Address" />
+									</Frame>
+								</div>
+
+								<div className="buttons">
+									<Button
+										onClick={this.onClickCloseTransferModal}
+										className="normalButton"
+										animate>Cancel</Button>
+
+									<Button
+										disabled={this.state.toTransfer === "" || this.state.toAddress === ""}
+										onClick={this.onTransfer}
+										className="normalButton"
+										animate
+										layer='success'>Transfer</Button>
+								</div>
+							</div>
+						</Frame>
+					</div>
+				</Modal>
 			</div>
 		)
 	}
