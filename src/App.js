@@ -109,6 +109,7 @@ function App() {
         // setView(<ERC721Done tokenName="AAAAAAAA" deployedAddress="io1vysscvelmy2e5kl44lzs9ntn02xgnul9v5lp7s" />)
       }, 5000);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
